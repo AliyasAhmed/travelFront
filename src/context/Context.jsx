@@ -8,7 +8,7 @@ const ContextProvider = (props)=>{
         await run(prompt)
     }
 
-    onSent("what id millandeep singh")
+    onSent("where is srinagar")
 
     const contextValue= {}
 

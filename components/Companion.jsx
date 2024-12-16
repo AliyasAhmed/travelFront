@@ -7,13 +7,13 @@ import try3 from '../src/assets/try3.svg'
 
 const Companion = () => {
     return (
-        <div className="border border-red-600 bg-gradient-to-tr from-[#000] via-[#000] to-[#0000]">
-            <div className="text-center max-w-full px-6  border border-red-600 mx-auto mt-36 mb-12 ">
+        <div className=" bg-gradient-to-tr from-[#000] via-[#000] to-[#000]">
+            <div className="text-center max-w-full px-6  mx-auto mt-36 bg-gradient-to-b from-[#] to-[#000] ">
                 <h1 className="text-xl md:text-5xl leading-tight font-inter font-semibold">
                     Travel Companion For All Your YES Moments
                 </h1>
                 {/* cards */}
-                <div className='border border-red-600'>
+                <div className='bg-black'>
                     <img src={try3} alt="" />
                 </div>
             </div>

@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import accomodationPicture from '../src/assets/accomodationPictute.svg'
 import gsap from 'gsap'
 
 const PackageAccomodationContent = () => {
+    const [accomodation, setAccomodation] = useState([])
     useEffect(()=>{
         gsap.to('.mainSection',{
             y:0,
@@ -48,7 +49,7 @@ const PackageAccomodationContent = () => {
             <div className="p-4 bg-black  mx-5 rounded-lg">
                 <div className="mx-auto ">
                     {/* input field */}
-                    <input type="text" name="" id="" placeholder='Search for accomodations' className='p-3 rounded-lg w-full mb-3 placeholder:font-bold ' />
+                    <input type="text" name="" id="" placeholder='Search for accomodations' className='p-3 rounded-lg w-full mb-3 placeholder:font-bold text-black ' />
 
                     {/* hotels div */}
                     <div className="flex flex-col gap-3">

@@ -3,8 +3,8 @@ import { FcGoogle } from "react-icons/fc";
 
 const AdminLogin = () => {
     return (
-        <section className="min-h-screen  flex items-center justify-center text-white">
-            <div className="max-w-lg w-full bg-[#06090f] rounded-lg shadow-lg p-8 my-4 ">
+        <section className="p-5 flex items-center justify-center text-white">
+            <div className="max-w-lg w-full bg-[#06090f] rounded-xl shadow-lg p-8 my-4 ">
                 <div className="text-center mb-8">
                     <h2 className="text-2xl font-bold">Admin Log In</h2>
                     <p className="text-gray-400 mt-2">Welcome Admin! Please enter your details</p>

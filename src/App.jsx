@@ -40,11 +40,7 @@ function App() {
           <Route path="/packageAccomodation" element={<PackageAccomodation />} />
           <Route path="/packageActivities" element={<PackageActivities />} />
           <Route path="/packagePdfGen" element={<PackagePdfGen />} />
-
-
-
-
-
+          
         </Routes>
 
         <Footer />

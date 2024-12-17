@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const Navbar = () => {
     return (
-        <header className="w-full py-5 sm:px-10 px-5 flex justify-between items-center   bg-gradient-to-r from-[#000] via-[#000] to-[#0000]">
+        <header className="w-full py-5 sm:px-10 px-5 flex justify-between items-center   bg-gradient-to-r from-[#0000] via-[#0000] to-[#0000]">
             <nav className="flex w-full justify-between items-center screen-max-width bg-transparent  ">
                 <div className='flex items-center gap-4'>
                     <h6 className=' text-lg hidden md:flex lg:flex'>Product </h6>

@@ -1,7 +1,7 @@
 import React from 'react'
-import frame1 from '../src/assets/frame1.svg'
-import frame2 from '../src/assets/frame2.svg'
-import try3 from '../src/assets/try3.svg'
+// import frame1 from '../src/assets/frame1.svg'
+// import frame2 from '../src/assets/frame2.svg'
+import try3 from '../src/assets/try3.svg';
 
 
 

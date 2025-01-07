@@ -1,49 +1,4 @@
-// import React from 'react'
-// import { Link } from 'react-router-dom'
 
-// const PackageImagesContent = () => {
-//     return (
-//         <section className='border border-red-500 h-full'>
-//             <div className='flex flex-col gap-3 border border-red-800 m-3'>
-//                 {/* text div */}
-//                 <div className="border border-red-500 flex justify-around items-center  ">
-//                     <div className='flex flex-col gap-2'>
-//                         <h1 className='text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] p-2'>Add Images</h1>
-//                         <p className='text-gray-400 text-lg'>Add at least one image to help travellers get a sense of your trip</p>
-//                     </div>
-//                     {/* button div */}
-//                     <div>
-//                         <div className="flex gap-4">
-//                             <Link to="/packageWeather">
-//                                 <button className="bg-black border border-gray-600 rounded-lg w-full md:w-[150px] px-4 py-2 hover:bg-[#1e1e1e]">
-//                                     Previous
-//                                 </button>
-//                             </Link>
-//                             <button
-//                                 className="bg-gradient-to-r from-[#A96F44] to-[#cfc24c] text-white font-semibold rounded-lg w-full md:w-[150px] px-4 py-2 hover:opacity-90"
-//                             // onClick={goToImages}
-//                             >
-//                                 Next
-//                             </button>
-//                         </div>
-//                     </div>
-//                 </div>
-//                 {/* images adding section */}
-//                 <div className="p-3 bg-black border rounded-lg ">
-//                     {/* inside image adding */}
-//                     <div>
-
-//                     </div>
-//                 </div>
-//             </div>
-//         </section>
-//     )
-// }
-
-// export default PackageImagesContent
-
-
-// my real code 
 
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';

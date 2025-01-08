@@ -18,12 +18,21 @@ import PackageAccomodationContent from '../components/PackageAccomodationContent
 import PackageAccomodation from './Pages/PackageAccomodation'
 import PackageActivities from './Pages/PackageActivities'
 import PackagePdfGen from './Pages/PackagePdfGen'
+import { createContext, React ,useState } from 'react'
+import ForgotPassword from './Pages/ForgotPassword'
+import ResetPassword from './Pages/ResetPassword'
 
+// use context
+export const Context= createContext();
 
 function App() {
+
+const [signedIn, setSignedIn] = useState(false)
+
   // return function
   return (
     <>
+    <Context.Provider value={[signedIn, setSignedIn]}>
       <BrowserRouter>
         <Navbar />
 
@@ -40,12 +49,16 @@ function App() {
           <Route path="/packageAccomodation" element={<PackageAccomodation />} />
           <Route path="/packageActivities" element={<PackageActivities />} />
           <Route path="/packagePdfGen" element={<PackagePdfGen />} />
+          <Route path="/forgotPassword" element={<ForgotPassword/>}/>
+          <Route path="/resetPassword" element={<ResetPassword/>}/>
+
           
         </Routes>
 
         <Footer />
 
       </BrowserRouter>
+      </Context.Provider>
 
 
     </>

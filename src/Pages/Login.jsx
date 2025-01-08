@@ -1,39 +1,49 @@
 
 // new code
-import React, { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
-import { useNavigate } from "react-router-dom"; // Updated import for navigation
+import React, { useContext, useState } from "react";
+import { MdOutlinePassword } from "react-icons/md";
+
+import { Link, useNavigate } from "react-router-dom"; // Updated import for navigation
 import axios from "axios"; // Import axios
+import { Context } from "../App";
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate(); // Use useNavigate instead of useHistory
+    const [signedIn, setSignedIn] = useContext(Context)
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
             const response = await axios.post(
-                'http://127.0.0.1:8000/api/v1/users/login', 
+                'http://127.0.0.1:8000/api/v1/users/login',
                 { email, password },
                 { headers: { 'Content-Type': 'application/json' } }
             );
-
+            console.log("response ", response.data.data);
             if (response.status === 200) {
                 // Save the token to localStorage
-                localStorage.setItem('authToken', response.data.token);
+                localStorage.setItem('authToken', response.data.data.access_token);
                 alert('Login successful!');
-                
+                setSignedIn(true)
+                setEmail('')
+                setPassword('')
+
                 // Redirect to the dashboard or home page
                 navigate('/dashboard'); // Replace '/dashboard' with your desired route
             } else {
                 setError(response.data.message); // Display error message from the API
+                setEmail('')
+                setPassword('')
             }
         } catch (error) {
             console.error('Error:', error);
             setError('An error occurred. Please try again.');
+            setEmail('')
+                setPassword('')
         }
     };
 
@@ -76,7 +86,7 @@ const Login = () => {
                         {error && <div className="text-red-500">{error}</div>}
 
                         <div className="flex justify-end text-sm">
-                            <a href="/forgotPass" className="text-green-400 hover:underline">
+                            <a href="/forgotPassword" className="text-green-400 hover:underline">
                                 Forgot password?
                             </a>
                         </div>
@@ -92,12 +102,13 @@ const Login = () => {
                         <p className="text-gray-400">or</p>
                         <hr className="flex-grow border-gray-700" />
                     </div>
+                    {/* // forgot password */}
                     <button
                         type="button"
-                        className="w-full mt-4 flex items-center justify-center gap-2 bg-gray-800 py-2 rounded-lg hover:bg-gray-700 transition"
+                        className="w-full mt-4 flex items-center justify-center gap-2 bg-gray-800 py-2 rounded-lg hover:bg-gray-700 transition" onClick={()=>navigate("/forgotPassword")}
                     >
-                        <FcGoogle className="text-2xl" />
-                        Login with Google
+                        <MdOutlinePassword className="text-2xl" />
+                        Forgot Password
                     </button>
                     <div className="text-center mt-6 text-sm">
                         <p>

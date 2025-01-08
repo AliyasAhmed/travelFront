@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -31,12 +32,14 @@ const ResetPassword = () => {
 
     if(password!== confirmPassword){
         setError("Passwords do not match!")
+        toast.dark("Passwords do not match")
         setLoading(false)
         return ;
     }
 
     if (!token) {
       setError("Invalid token. Please try the password reset process again.");
+      toast.warn("Invalid token. Please try the password reset process again.")
       setLoading(false);
       return;
     }
@@ -50,6 +53,7 @@ const ResetPassword = () => {
 
       if (response.status === 200) {
         setSuccess("Password reset successful. You can now log in with your new password.");
+        toast.success("Password reset successful. You can now log in with your new password.")
         setTimeout(()=>{
             navigate("/Login");
         },2000)
@@ -62,10 +66,13 @@ const ResetPassword = () => {
 
       if (error.response) {
         setError(error.response.data.message || "Invalid request. Please try again.");
+        toast.error(error.response.data.message || "Invalid request. Please try again.")
       } else if (error.request) {
         setError("No response from server. Please try again later.");
+        toast.error("No response from server. Please try again later.")
       } else {
         setError("An error occurred. Please try again.");
+        toast.error("An error occurred. Please try again.")
       }
     } finally {
       setLoading(false);
@@ -74,6 +81,7 @@ const ResetPassword = () => {
 
   return (
     <section className="h-screen flex justify-center items-center bg-gray-900">
+        <ToastContainer/>
       <div className="w-full max-w-md p-6 bg-gray-800 text-white rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold text-center mb-6">Reset Password</h2>
         <p className="text-sm text-gray-400 text-center mb-4">

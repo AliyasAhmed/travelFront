@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from "react-toastify";
 // import { Navigate } from "react-router-dom";
 
 const Signup = () => {
@@ -21,7 +22,6 @@ const Signup = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
-  // const Navigate = Navigate(); // Use useNavigate instead of useHistory
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,6 +33,7 @@ const Signup = () => {
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match!");
+      toast.warning("Passwords do not match")
       return;
     }
 
@@ -53,6 +54,7 @@ const Signup = () => {
         }
       );
       setSuccess("Signup successful! Welcome to the platform.");
+      toast.success("Signup successful! Welcome to the platform.")
       setFormData(
         {
           email: "",
@@ -63,10 +65,15 @@ const Signup = () => {
           agentName: ""
         })
       // console.log(response.data); // For debugging purposes
-      navigate('/Login');
-      // Navigate('/Login'); 
+
+      setTimeout(()=>{
+        navigate('/Login');  // Navigate('/Login'); 
+      },2000)
+      
+     
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong. Try again!");
+      toast.error(err.response?.data?.message || "Something went wrong. Try again!")
     } finally {
       setLoading(false);
     }
@@ -74,6 +81,7 @@ const Signup = () => {
 
   return (
     <section className="p-5 flex items-center justify-center text-white">
+      <ToastContainer/>
       <div className="max-w-lg w-full bg-[#06090f] rounded-xl shadow-lg p-8 my-4 ">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold">Create your Account</h2>

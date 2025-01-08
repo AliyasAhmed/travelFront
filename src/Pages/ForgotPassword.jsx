@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -22,8 +23,10 @@ const ForgotPassword = () => {
   
       if (response.status === 200) {
         setSuccess("Mail sent successfully, please check your email.");
+        toast.success("Mail sent successfully,")
       } else {
         setError(response.data.message || "Something went wrong.");
+        
       }
     } catch (error) {
       console.error("Error response:", error.response?.data || error.message);
@@ -32,12 +35,15 @@ const ForgotPassword = () => {
       if (error.response) {
         // Server responded with a status outside the 2xx range
         setError(error.response.data.message || "Invalid request. Please try again.");
+        toast.warning("Invalid request. Please try again.")
       } else if (error.request) {
         // Request was made but no response received
         setError("No response from server. Please try again later.");
+        toast.warning("No response from server. Please try again later.")
       } else {
         // Something happened while setting up the request
         setError("An error occurred. Please try again.");
+        toast.warning("An error occurred. Please try again.")
       }
     } finally {
       setLoading(false);
@@ -47,6 +53,7 @@ const ForgotPassword = () => {
 
   return (
     <section className="h-screen flex justify-center items-center bg-gray-900">
+      <ToastContainer/>
       <div className="w-full max-w-md p-6 bg-gray-800 text-white rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold text-center mb-6">Forgot Password</h2>
         <p className="text-sm text-gray-400 text-center mb-4">

@@ -6,6 +6,7 @@ import { MdOutlinePassword } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom"; // Updated import for navigation
 import axios from "axios"; // Import axios
 import { Context } from "../App";
+import { toast, ToastContainer } from "react-toastify";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -27,13 +28,16 @@ const Login = () => {
             if (response.status === 200) {
                 // Save the token to localStorage
                 localStorage.setItem('authToken', response.data.data.access_token);
-                alert('Login successful!');
+                toast.success('Login successful!');
                 setSignedIn(true)
                 setEmail('')
                 setPassword('')
 
                 // Redirect to the dashboard or home page
-                navigate('/dashboard'); // Replace '/dashboard' with your desired route
+                setTimeout(()=>{
+                    navigate('/dashboard'); // navigate to dashboard
+                },2000)
+                
             } else {
                 setError(response.data.message); // Display error message from the API
                 setEmail('')
@@ -49,6 +53,7 @@ const Login = () => {
 
     return (
         <section className="p-5 flex items-center justify-center text-white">
+            <ToastContainer/>
             <div className="max-w-lg w-full bg-[#06090f] rounded-xl shadow-lg p-8 my-4 ">
                 <div className="text-center mb-8">
                     <h2 className="text-2xl font-bold">Log In</h2>

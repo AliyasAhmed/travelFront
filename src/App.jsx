@@ -21,6 +21,7 @@ import PackagePdfGen from './Pages/PackagePdfGen'
 import { createContext, React ,useState } from 'react'
 import ForgotPassword from './Pages/ForgotPassword'
 import ResetPassword from './Pages/ResetPassword'
+import UserConvo from './Pages/UserConvo'
 
 // use context
 export const Context= createContext();
@@ -51,6 +52,8 @@ const [signedIn, setSignedIn] = useState(false)
           <Route path="/packagePdfGen" element={<PackagePdfGen />} />
           <Route path="/forgotPassword" element={<ForgotPassword/>}/>
           <Route path="/resetPassword" element={<ResetPassword/>}/>
+          <Route path="/userConvo" element={<UserConvo/>}/>
+
 
           
         </Routes>

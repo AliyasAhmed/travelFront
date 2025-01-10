@@ -35,7 +35,7 @@ const Login = () => {
 
                 // Redirect to the dashboard or home page
                 setTimeout(()=>{
-                    navigate('/dashboard'); // navigate to dashboard
+                    navigate('/userConvo'); // navigate to dashboard
                 },2000)
                 
             } else {

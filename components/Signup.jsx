@@ -88,6 +88,7 @@ const Signup = () => {
           <p className="text-gray-400 mt-2">Welcome! Please enter your details</p>
         </div>
         <form onSubmit={handleSubmit}>
+          
           <div className="flex flex-col gap-4">
             {error && <p className="text-red-500 text-sm">{error}</p>}
             {success && <p className="text-green-500 text-sm">{success}</p>}

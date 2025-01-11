@@ -22,6 +22,7 @@ import { createContext, React ,useState } from 'react'
 import ForgotPassword from './Pages/ForgotPassword'
 import ResetPassword from './Pages/ResetPassword'
 import UserConvo from './Pages/UserConvo'
+import AdminRoutes from './Pages/Admin/AdminRoutes'
 
 // use context
 export const Context= createContext();
@@ -53,6 +54,8 @@ const [signedIn, setSignedIn] = useState(false)
           <Route path="/forgotPassword" element={<ForgotPassword/>}/>
           <Route path="/resetPassword" element={<ResetPassword/>}/>
           <Route path="/userConvo" element={<UserConvo/>}/>
+          {/* admin routes */}
+          <Route path='/admin/*' element={<AdminRoutes/>}/>
 
 
           

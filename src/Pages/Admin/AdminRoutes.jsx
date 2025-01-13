@@ -5,6 +5,7 @@ import AdminDashboardWrapper from './AdminDashboardWrapper';
 import TravelAi from './TravelAi';
 import Try from './Try';
 import PlanDetails from './PlanDetails';
+import PlanDetailsPlan from './PlanDetailsPlan';
 
 
 function AdminRoutes() {
@@ -21,6 +22,7 @@ function AdminRoutes() {
         <Route path="/dashboard" element={<Outlet />} />
         <Route path='/travelAi' element={<TravelAi />} />
         <Route path='/planDetails' element={<PlanDetails />} />
+        <Route path="/planDetailsPlan/:id" element={<PlanDetailsPlan />} />
         <Route path='/try' element={<Try/>}/>
 
       </Route>

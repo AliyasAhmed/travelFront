@@ -6,6 +6,8 @@ import TravelAi from './TravelAi';
 import Try from './Try';
 import PlanDetails from './PlanDetails';
 import PlanDetailsPlan from './PlanDetailsPlan';
+import AgencyDetails from './AgencyDetails';
+import AgencyDetailsAgency from './AgencyDetailsAgency';
 
 
 function AdminRoutes() {
@@ -22,7 +24,9 @@ function AdminRoutes() {
         <Route path="/dashboard" element={<Outlet />} />
         <Route path='/travelAi' element={<TravelAi />} />
         <Route path='/planDetails' element={<PlanDetails />} />
+        <Route path='/agencyDetails' element={<AgencyDetails />} />
         <Route path="/planDetailsPlan/:id" element={<PlanDetailsPlan />} />
+        <Route path="/agencyDetailsAgency/:id" element={<AgencyDetailsAgency />} />
         <Route path='/try' element={<Try/>}/>
 
       </Route>

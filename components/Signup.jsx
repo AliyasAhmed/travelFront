@@ -1,6 +1,6 @@
 
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -19,6 +19,7 @@ const Signup = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [agencies, setAgencies] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
@@ -27,6 +28,28 @@ const Signup = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  // fetch agencies
+  const fetchAgencies = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/v1/users/agencies');
+      setAgencies(Array.isArray(response.data.data.data) ? response.data.data.data : []); // Ensure agencies is always an array
+      // setNewAgencies(response.data.data)
+      console.log(agencies)
+    } catch (error) {
+      console.error('Error fetching agencies:', error);
+      setError('Error fetching agencies.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAgencies();
+  }
+    , [])
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,11 +89,11 @@ const Signup = () => {
         })
       // console.log(response.data); // For debugging purposes
 
-      setTimeout(()=>{
+      setTimeout(() => {
         navigate('/Login');  // Navigate('/Login'); 
-      },2000)
-      
-     
+      }, 2000)
+
+
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong. Try again!");
       toast.error(err.response?.data?.message || "Something went wrong. Try again!")
@@ -79,16 +102,18 @@ const Signup = () => {
     }
   };
 
+
+
   return (
     <section className="p-5 flex items-center justify-center text-white">
-      <ToastContainer/>
+      <ToastContainer />
       <div className="max-w-lg w-full bg-[#06090f] rounded-xl shadow-lg p-8 my-4 ">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold">Create your Account</h2>
           <p className="text-gray-400 mt-2">Welcome! Please enter your details</p>
         </div>
         <form onSubmit={handleSubmit}>
-          
+
           <div className="flex flex-col gap-4">
             {error && <p className="text-red-500 text-sm">{error}</p>}
             {success && <p className="text-green-500 text-sm">{success}</p>}
@@ -128,15 +153,25 @@ const Signup = () => {
               <label htmlFor="travel_agency" className="block text-sm mb-1">
                 Travel Agency
               </label>
-              <input
-                type="text"
+              <select
                 id="travel_agency"
                 name="travel_agency"
-                placeholder="Enter your travel agency name"
-                className="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring focus:ring-green-500 placeholder-gray-500"
+                className="w-full px-4 py-2 bg-gray-800 rounded-lg focus:outline-none focus:ring focus:ring-green-500 text-white"
                 value={formData.travel_agency}
                 onChange={handleChange}
-              />
+
+              >
+                <option value="" disabled>
+                  Select your travel agency
+                </option>
+                {agencies.map((v) => {
+                  return <option key={v.id} value={travel_agency}>{v.name}</option>
+                })}
+                {/* <option value="Agency A">Agency A</option>
+                <option value="Agency B">Agency B</option>
+                <option value="Agency C">Agency C</option>
+                <option value="Agency D">Agency D</option> */}
+              </select>
             </div>
 
             <div>

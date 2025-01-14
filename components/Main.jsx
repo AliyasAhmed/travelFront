@@ -10,9 +10,11 @@ import { VscSend } from "react-icons/vsc";
 // import geminiLogo from '../assets/geminiLogo.png'
 
 const Main = () => {
-   
-
     const [input, setInput] = useState('');
+
+    const sendPrompt=async (input)=>{
+            
+    }
 
     return (
         <div className=' flex-1 min-h-screen pb-[15vh] relative '>

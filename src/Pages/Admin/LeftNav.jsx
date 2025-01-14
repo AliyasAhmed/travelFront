@@ -25,7 +25,7 @@ function LeftNav({setIsNavVisible}) {
 
               {/* service admins */}
               <li className="hover:text-gray-200 cursor-pointer hover:transition-all  duration-500 ease-in-out hover:translate-x-2">
-                <Link to="/admin/hotelservices">
+                <Link to="/admin/agencyDetails">
                   <span className="flex items-center gap-2 text-sm md:text-lg lg:text-xl px-2 py-4 rounded-l-lg" onClick={() => setIsNavVisible(false)}>
                     Add Agencies
                   </span>

@@ -30,11 +30,12 @@ export const Context= createContext();
 function App() {
 
 const [signedIn, setSignedIn] = useState(false)
+const [user,setUser]= useState(null)
 
   // return function
   return (
     <>
-    <Context.Provider value={[signedIn, setSignedIn]}>
+    <Context.Provider value={[signedIn, setSignedIn, user , setUser]}>
       <BrowserRouter>
         <Navbar />
 

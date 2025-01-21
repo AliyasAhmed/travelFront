@@ -25,17 +25,21 @@ import UserConvo from './Pages/UserConvo'
 import AdminRoutes from './Pages/Admin/AdminRoutes'
 
 // use context
-export const Context= createContext();
+// export const Context= createContext();
+
+import { AppProvider } from '../context/AppContext';
+
 
 function App() {
 
-const [signedIn, setSignedIn] = useState(false)
-const [user,setUser]= useState(null)
+// const [signedIn, setSignedIn] = useState(false)
+// const [user,setUser]= useState(null)
 
   // return function
   return (
     <>
-    <Context.Provider value={[signedIn, setSignedIn, user , setUser]}>
+    {/* <Context.Provider value={[signedIn, setSignedIn, user , setUser]}> */}
+    <AppProvider>
       <BrowserRouter>
         <Navbar />
 
@@ -65,7 +69,8 @@ const [user,setUser]= useState(null)
         <Footer />
 
       </BrowserRouter>
-      </Context.Provider>
+      </AppProvider>
+      {/* </Context.Provider> */}
 
 
     </>

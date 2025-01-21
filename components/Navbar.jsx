@@ -1,11 +1,15 @@
 import React, { useContext } from 'react'
 import navLogo from '../src/assets/navLogo.svg'
 import { Link } from 'react-router-dom'
-import { Context } from '../src/App'
+// import { Context } from '../src/App'
 import Logout from './Logout'
+import { AppContext } from '../context/AppContext'
 
 const Navbar = () => {
-    const [signedIn, setSignedIn] = useContext(Context)
+    // const [signedIn, setSignedIn] = useContext(Context)
+    const { signedIn, user, setSignedIn, setUser } = useContext(AppContext);
+
+    
     return (
         <header className="w-full py-5 sm:px-10 px-5 flex justify-between items-center   bg-gradient-to-r from-[#0000] via-[#0000] to-[#0000]">
             <nav className="flex w-full justify-between items-center screen-max-width bg-transparent  ">

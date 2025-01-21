@@ -5,15 +5,16 @@ import { MdOutlinePassword } from "react-icons/md";
 
 import { Link, useNavigate } from "react-router-dom"; // Updated import for navigation
 import axios from "axios"; // Import axios
-import { Context } from "../App";
+// import { Context } from "../App";
 import { toast, ToastContainer } from "react-toastify";
+import { AppContext } from "../../context/AppContext";
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate(); // Use useNavigate instead of useHistory
-    const [signedIn, setSignedIn, user , setUser] = useContext(Context)
+    const {signedIn, setSignedIn, user , setUser} = useContext(AppContext)
 
     const handleLogin = async (e) => {
         e.preventDefault();

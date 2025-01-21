@@ -1,5 +1,6 @@
 import React from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const Adventure = () => {
     return (
@@ -13,14 +14,16 @@ const Adventure = () => {
                     Interested to learn more?
                 </p>
                 <div className="">
-                <button
-                    aria-label="Generate trip plan"
-                    className="h-[55px] px-6 bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] text-white font-bold rounded-lg shadow-md hover:shadow-lg flex items-center gap-3  mx-auto mt-2"
-                >
-                    Try Now <span className="text-gray-600"><FaArrowRightLong /></span>
-                </button>
+                    <Link to='/userConvo'>
+                        <button
+                            aria-label="Generate trip plan"
+                            className="h-[55px] px-6 bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] text-white font-bold rounded-lg shadow-md hover:shadow-lg flex items-center gap-3  mx-auto mt-2"
+                        >
+                            Try Now <span className="text-gray-600"><FaArrowRightLong /></span>
+                        </button>
+                    </Link>
                 </div>
-                
+
 
             </div>
         </section>

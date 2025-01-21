@@ -21,7 +21,7 @@ const Hero = () => {
                         aria-label="Trip planning input"
                         className="placeholder:font-bold placeholder:text-lg placeholder:text-gray-100 h-[55px] w-[350px] px-4 text-gray-700 placeholder-gray-400 bg-white rounded-l-lg focus:outline-none shadow-md"
                     />
-                    <Link to='/dashboard'>
+                    <Link to='/userConvo'>
                         <button
                             aria-label="Generate trip plan"
                             className="h-[55px] px-6 bg-gradient-to-r from-[#A96F44] to-[#cfc24c] text-white font-semibold rounded-r-lg shadow-md hover:shadow-lg flex items-center"

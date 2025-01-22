@@ -25,7 +25,7 @@ const PrivacyPol = () => {
 
         {/* Privacy Policy Content */}
         <div className="space-y-6">
-          <h2 className="text-2xl font-semibold">1. Information Collection</h2>
+          <h2 className="text-2xl font-semibold">1. Information Collections</h2>
           <p>
             We collect personal information when you interact with our website,
             such as your name, email address, and usage data.

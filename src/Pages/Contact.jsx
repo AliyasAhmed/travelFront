@@ -124,7 +124,7 @@ const Contact = () => {
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white p-3 rounded font-bold hover:bg-blue-700 borderborder-[#4d4d4d80]" 
+              className="w-full bg-blue-600 text-white p-3 rounded font-bold hover:bg-blue-700 borderborder-[#4d4d4d80]"
             >
               Submit
             </button>

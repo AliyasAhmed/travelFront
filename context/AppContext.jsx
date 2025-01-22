@@ -5,6 +5,7 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
     const [signedIn, setSignedIn] = useState(false);
     const [user, setUser] = useState(null);
+    const [userName, setUserName] = useState(null);
 
     // Check localStorage for token and initialize state
     useEffect(() => {
@@ -19,7 +20,7 @@ export const AppProvider = ({ children }) => {
     }, []); // Runs only once when the component is mounted
 
     return (
-        <AppContext.Provider value={{ signedIn, setSignedIn, user, setUser }}>
+        <AppContext.Provider value={{ signedIn, setSignedIn, user, setUser, userName, setUserName }}>
             {children}
         </AppContext.Provider>
     );

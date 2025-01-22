@@ -14,7 +14,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate(); // Use useNavigate instead of useHistory
-    const {signedIn, setSignedIn, user , setUser} = useContext(AppContext)
+    const { signedIn, setSignedIn, user, setUser, userName, setUserName } = useContext(AppContext)
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -31,14 +31,15 @@ const Login = () => {
                 localStorage.setItem('authToken', response.data.data.access_token);
                 toast.success('Login successful!');
                 setSignedIn(true)
+                setUserName(userName)
                 setEmail('')
                 setPassword('')
 
                 // Redirect to the dashboard or home page
-                setTimeout(()=>{
+                setTimeout(() => {
                     navigate('/userConvo'); // navigate to dashboard
-                },2000)
-                
+                }, 2000)
+
             } else {
                 setError(response.data.message); // Display error message from the API
                 setEmail('')
@@ -48,13 +49,14 @@ const Login = () => {
             console.error('Error:', error);
             setError('An error occurred. Please try again.');
             setEmail('')
-                setPassword('')
+            setPassword('')
         }
     };
 
+
     return (
         <section className="p-5 flex items-center justify-center text-white">
-            <ToastContainer/>
+            <ToastContainer />
             <div className="max-w-lg w-full bg-[#06090f] rounded-xl shadow-lg p-8 my-4 ">
                 <div className="text-center mb-8">
                     <h2 className="text-2xl font-bold">Log In</h2>
@@ -111,7 +113,7 @@ const Login = () => {
                     {/* // forgot password */}
                     <button
                         type="button"
-                        className="w-full mt-4 flex items-center justify-center gap-2 bg-gray-800 py-2 rounded-lg hover:bg-gray-700 transition" onClick={()=>navigate("/forgotPassword")}
+                        className="w-full mt-4 flex items-center justify-center gap-2 bg-gray-800 py-2 rounded-lg hover:bg-gray-700 transition" onClick={() => navigate("/forgotPassword")}
                     >
                         <MdOutlinePassword className="text-2xl" />
                         Forgot Password

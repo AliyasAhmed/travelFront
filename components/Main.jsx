@@ -43,9 +43,9 @@ const Main = () => {
             console.warn('No auth token found in localStorage');
             return;
         }
-    
+
         setToken(token);
-    
+
         try {
             const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
             const now = Math.floor(Date.now() / 1000); // Current timestamp in seconds
@@ -74,15 +74,17 @@ const Main = () => {
 
     const formatResponse = (text) => {
         return text
-            .replace(/#\s(.*?)\n/g, '<h1>$1</h1>') // H1
-            .replace(/##\s(.*?)\n/g, '<h2>$1</h2>') // H2
-            .replace(/###\s(.*?)\n/g, '<h3>$1</h3>') // H3
+        .replace(/#\s(.*?)\n/g, '<h1 style="color: blue; font-size: 24px;">$1</h1>') // H1
+
+            .replace(/##\s(.*?)\n/g, '<h2 style="color: green;font-size: 22px">$1</h2>') // H2
+            .replace(/###\s(.*?)\n/g, '<h3 style="color: orange;">$1</h3>') // H3
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
             .replace(/---/g, '<hr/>') // Horizontal rule
             .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1"/>') // Images
             .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>') // Links
             .replace(/\*\s(.*?)\n/g, '<li>$1</li>') // List items
-            .replace(/\n/g, '<br/>'); // Line breaks
+            .replace(/\n/g, '<br/>') // Line breaks
+            .replace(/(.+?)(?=<br\/>|$)/g, '<span style="color: black;">$1</span>'); // Normal text
     };
 
 
@@ -90,17 +92,17 @@ const Main = () => {
     // Function to send the user input to the API
     const sendPrompt = async () => {
         if (!input.trim()) return;
-    
+
         // Clear previous response and set loading state
         setResponseContent('');
         setLoading(true);
-    
+
         try {
             // Log token and user details for debugging
             console.log('Token:', token);
             console.log('User ID:', userId);
             console.log('Agency ID:', agencyId);
-    
+
             // Axios POST request with proper payload and headers
             const response = await axios.post(
                 `http://127.0.0.1:8000/api/v1/conversations/chats?agency_id=${agencyId}&user_id=${userId}`,
@@ -112,12 +114,12 @@ const Main = () => {
                     },
                 }
             );
-    
+
             // Handle the response and format the text
             const responseText = response.data.content;
             const formattedText = formatResponse(responseText);
             const responseWords = formattedText.split(' ');
-    
+
             // Display the response word by word with a delay
             responseWords.forEach((word, index) => {
                 delayPara(index, word + ' ');
@@ -132,51 +134,190 @@ const Main = () => {
             setInput('');
         }
     };
-    
+
 
 
     // export to pdf function
     // working
+    // const exportToPDF = () => {
+    //     const element = document.getElementById("responseContent"); // The container you want to export
+
+    //     html2canvas(element, { scale: 2 }).then((canvas) => {
+    //         const imgData = canvas.toDataURL("image/png");
+    //         const pdf = new jsPDF("p", "mm", "a4");
+
+    //         const pageWidth = pdf.internal.pageSize.getWidth();
+    //         const pageHeight = pdf.internal.pageSize.getHeight();
+
+    //         const imgWidth = pageWidth;
+    //         const imgHeight = (canvas.height * pageWidth) / canvas.width;
+
+    //         let y = 0; // Starting y-coordinate for content placement
+    //         let contentHeightLeft = imgHeight; // Remaining content height to render
+
+    //         while (contentHeightLeft > 0) {
+    //             pdf.addImage(
+    //                 imgData,
+    //                 "PNG",
+    //                 0,
+    //                 y === 0 ? 0 : 0 - y, // Adjust for page breaks
+    //                 imgWidth,
+    //                 imgHeight
+    //             );
+    //             contentHeightLeft -= pageHeight; // Reduce content height left
+    //             y += pageHeight; // Move y-coordinate for the next page
+    //             if (contentHeightLeft > 0) {
+    //                 pdf.addPage();
+    //             }
+    //         }
+
+    //         pdf.save("output.pdf");
+    //     }).catch((error) => {
+    //         console.error("Error generating PDF:", error);
+    //         alert("Failed to generate PDF. Please try again.");
+    //     });
+
+    // };
+
+    // try one working with header and logo but half pages
+    // const exportToPDF = () => {
+    //     const element = document.getElementById("responseContent");
+
+    //     html2canvas(element, { scale: 2 }).then((canvas) => {
+    //         const imgData = canvas.toDataURL("image/jpeg", 0.8); // Use JPEG for compression
+    //         const pdf = new jsPDF("p", "mm", "a4");
+
+    //         const pageWidth = pdf.internal.pageSize.getWidth();
+    //         const pageHeight = pdf.internal.pageSize.getHeight();
+    //         const imgWidth = pageWidth;
+    //         const imgHeight = (canvas.height * pageWidth) / canvas.width;
+
+    //         // Add header and logo
+    //         pdf.setFontSize(18);
+    //         pdf.text("MaizBaan AI - Report", 10, 10);
+    //         const logo = "../src/assets/logo.jpg"; // Replace with the path to your logo
+    //         pdf.addImage(logo, "PNG", 170, 5, 30, 10); // Adjust the dimensions and position of the logo
+
+    //         // Add content
+    //         let y = 20; // Start below the header
+    //         let contentHeightLeft = imgHeight;
+
+    //         while (contentHeightLeft > 0) {
+    //             pdf.addImage(
+    //                 imgData,
+    //                 "JPEG",
+    //                 0,
+    //                 y,
+    //                 imgWidth,
+    //                 imgHeight
+    //             );
+    //             contentHeightLeft -= pageHeight;
+    //             y = 0;
+    //             if (contentHeightLeft > 0) {
+    //                 pdf.addPage();
+    //             }
+    //         }
+
+    //         pdf.save("output.pdf");
+    //     }).catch((error) => {
+    //         console.error("Error generating PDF:", error);
+    //         alert("Failed to generate PDF. Please try again.");
+    //     });
+    // };
+
+    //claude generated 
     const exportToPDF = () => {
-        const element = document.getElementById("responseContent"); // The container you want to export
-
+        const element = document.getElementById("responseContent");
+    
         html2canvas(element, { scale: 2 }).then((canvas) => {
-            const imgData = canvas.toDataURL("image/png");
+            const imgData = canvas.toDataURL("image/jpeg", 0.8);
             const pdf = new jsPDF("p", "mm", "a4");
-
+    
             const pageWidth = pdf.internal.pageSize.getWidth();
             const pageHeight = pdf.internal.pageSize.getHeight();
-
             const imgWidth = pageWidth;
             const imgHeight = (canvas.height * pageWidth) / canvas.width;
-
-            let y = 0; // Starting y-coordinate for content placement
-            let contentHeightLeft = imgHeight; // Remaining content height to render
-
-            while (contentHeightLeft > 0) {
-                pdf.addImage(
-                    imgData,
-                    "PNG",
+    
+            // Add header and logo
+            const headerHeight = 20; // Reserve space for header
+            pdf.setFontSize(20);
+            pdf.text("MaizBaan AI - Report", 10, 10);
+            const logo = "../src/assets/logo.jpg";
+            pdf.addImage(logo, "PNG", 170, 5, 30, 10);
+    
+            // Calculate number of pages needed
+            const contentHeight = imgHeight;
+            const pageContentHeight = pageHeight - headerHeight;
+            const totalPages = Math.ceil(contentHeight / pageContentHeight);
+    
+            // Add content across multiple pages
+            let remainingHeight = contentHeight;
+            let sourceY = 0;
+            let currentPage = 0;
+    
+            while (remainingHeight > 0) {
+                // Calculate height for current page
+                const currentHeight = Math.min(remainingHeight, pageContentHeight);
+                
+                // Calculate the portion of the image to use
+                const sourceHeight = (currentHeight * canvas.height) / imgHeight;
+                
+                // Create temporary canvas for the current portion
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = canvas.width;
+                tempCanvas.height = sourceHeight;
+                const ctx = tempCanvas.getContext('2d');
+                
+                // Draw portion of original canvas
+                ctx.drawImage(
+                    canvas,
                     0,
-                    y === 0 ? 0 : 0 - y, // Adjust for page breaks
-                    imgWidth,
-                    imgHeight
+                    sourceY,
+                    canvas.width,
+                    sourceHeight,
+                    0,
+                    0,
+                    canvas.width,
+                    sourceHeight
                 );
-                contentHeightLeft -= pageHeight; // Reduce content height left
-                y += pageHeight; // Move y-coordinate for the next page
-                if (contentHeightLeft > 0) {
+    
+                // Convert to image data
+                const pageImgData = tempCanvas.toDataURL("image/jpeg", 0.8);
+    
+                // Add to PDF
+                pdf.addImage(
+                    pageImgData,
+                    "JPEG",
+                    0,
+                    currentPage === 0 ? headerHeight : 0, // Account for header on first page
+                    imgWidth,
+                    currentHeight
+                );
+    
+                // Update variables for next iteration
+                remainingHeight -= currentHeight;
+                sourceY += sourceHeight;
+                
+                // Add new page if there's more content
+                if (remainingHeight > 0) {
                     pdf.addPage();
+                    currentPage++;
+                    
+                    // Add header to new page
+                    pdf.setFontSize(18);
+                    pdf.text("MaizBaan AI - Report", 10, 10);
+                    pdf.addImage(logo, "PNG", 170, 5, 30, 10);
                 }
             }
-
+    
             pdf.save("output.pdf");
         }).catch((error) => {
             console.error("Error generating PDF:", error);
             alert("Failed to generate PDF. Please try again.");
         });
-
     };
-    // console.log("token", token)
+
+
 
     return (
         <div className="flex-1 min-h-screen pb-[15vh] relative m-3">
@@ -205,16 +346,18 @@ const Main = () => {
 
                         <div
                             id="responseContent"
-                            className="py-10 px-[5%] text-lg leading-relaxed font-bold"
                             style={{
-                                backgroundColor: "#1a1a1a",
+                                backgroundColor: "#ffffff",
+                                color: "#000000",
                                 borderRadius: "8px",
                                 boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                                 padding: "20px",
                                 marginBottom: "20px",
+                                fontFamily: "Arial, sans-serif"
                             }}
                             dangerouslySetInnerHTML={{ __html: responseContent }}
                         />
+
                         <button onClick={exportToPDF} className="bg-red-500 text-white p-2 rounded">
                             Download as PDF
                         </button>

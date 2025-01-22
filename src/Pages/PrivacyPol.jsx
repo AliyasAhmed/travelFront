@@ -6,7 +6,7 @@ const PrivacyPol = () => {
   }, []);
   return (
     <div
-      className="relative min-h-screen bg-cover bg-center text-white backdrop-blur-sm"
+      className="flex justify-center relative min-h-screen bg-cover bg-center text-white backdrop-blur-sm"
       style={{
         backgroundImage: "url(https://your-image-url.com)", // Replace with your own image URL
       }}

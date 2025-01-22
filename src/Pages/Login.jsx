@@ -25,13 +25,16 @@ const Login = () => {
                 { email, password },
                 { headers: { 'Content-Type': 'application/json' } }
             );
-            console.log("response ", response.data.data);
+            console.log("hello response ", response.data.data);
+            // console.log("response email", response.data.data.data.email);
             if (response.status === 200) {
                 // Save the token to localStorage
                 localStorage.setItem('authToken', response.data.data.access_token);
                 toast.success('Login successful!');
+                console.log(response.data.data)
                 setSignedIn(true)
-                setUserName(userName)
+                const userEmail= response.data.data.data.email.split("@")[0];
+                setUserName(userEmail)
                 setEmail('')
                 setPassword('')
 
@@ -53,6 +56,7 @@ const Login = () => {
         }
     };
 
+    // console.log("final name",userName)
 
     return (
         <section className="p-5 flex items-center justify-center text-white">
@@ -133,3 +137,4 @@ const Login = () => {
 };
 
 export default Login;
+

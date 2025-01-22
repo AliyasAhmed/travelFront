@@ -1,7 +1,7 @@
 
 
 //this is my code that will have extracted tokens from authtokens , first i am trying , the above one is working one
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { MdOutlineAddPhotoAlternate } from 'react-icons/md';
 import { GrMicrophone } from 'react-icons/gr';
@@ -9,14 +9,15 @@ import { VscSend } from 'react-icons/vsc';
 import axios from 'axios';
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { AppContext } from '../context/AppContext';
 
 const Main = () => {
-    const [input, setInput] = useState('');
-    const [responseContent, setResponseContent] = useState('');
     const [loading, setLoading] = useState(false);
     const [token, setToken] = useState('');
     const [userId, setUserId] = useState('');
     const [agencyId, setAgencyId] = useState('');
+    
+    const {userName, setPrevPrompt,input, setInput, responseContent, setResponseContent} = useContext(AppContext)
 
 
 
@@ -114,6 +115,7 @@ const Main = () => {
                     },
                 }
             );
+            
 
             // Handle the response and format the text
             const responseText = response.data.content;
@@ -124,6 +126,7 @@ const Main = () => {
             responseWords.forEach((word, index) => {
                 delayPara(index, word + ' ');
             });
+            
         } catch (error) {
             // Log error response for debugging
             console.error('Error response:', error.response ? error.response.data : error.message);
@@ -132,6 +135,8 @@ const Main = () => {
             // Reset loading state and clear input field
             setLoading(false);
             setInput('');
+            setPrevPrompt((prev) => [...prev, input])
+
         }
     };
 
@@ -369,7 +374,7 @@ const Main = () => {
                         <div className="my-12 text-[56px] font-semibold text-slate-500 p-5">
                             <p>
                                 <span className="bg-gradient-to-r from-[#2d8890] via-[#ab838a] to-[#c65366] bg-clip-text text-transparent">
-                                    Hello, Faizan.
+                                    Hello, {userName}.
                                 </span>
                             </p>
                             <p className="text-slate-400">How can I help you today?</p>

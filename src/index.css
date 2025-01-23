@@ -81,6 +81,28 @@ canvas {
   max-width: 1120px;
 }
 
+.showProfilecss {
+  position: absolute;
+  top: 48px;
+  right: 32px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.showProfilecss.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hideProfilecss {
+  position: absolute;
+  top: -1000px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
 @layer utilities {
   .flex-center {
     @apply flex items-center justify-center

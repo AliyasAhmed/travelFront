@@ -26,22 +26,7 @@ const Main = () => {
     
     const {userName, setPrevPrompt,input, setInput, responseContent, setResponseContent} = useContext(AppContext)
 
-    // Extract userId and agencyId from authToken
-    // useEffect(() => {
-    //     const token = localStorage.getItem('authToken');
-    //     setToken(token)
-    //     if (token) {
-    //         try {
-    //             const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
-    //             setUserId(payload.id || ''); // Extract and set userId
-    //             setAgencyId(payload.agencyId || ''); // Extract and set agencyId
-    //         } catch (error) {
-    //             console.error('Failed to decode token:', error);
-    //         }
-    //     } else {
-    //         console.warn('No auth token found in localStorage');
-    //     }
-    // }, []);
+
 
     useEffect(() => {
         const fetchChatHistory = async () => {

@@ -10,16 +10,21 @@ import axios from 'axios';
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { AppContext } from '../context/AppContext';
+import UserProfileDetails from './UserProfileDetails';
+import Login from '../src/Pages/Login';
+import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
     const [loading, setLoading] = useState(false);
     const [token, setToken] = useState('');
     const [userId, setUserId] = useState('');
     const [agencyId, setAgencyId] = useState('');
+    const [showProfile, setShowProfile] = useState(false);
+    const [chatHistory,setChatHistory]= useState([])
+    const navigate = useNavigate(); // Use useNavigate instead of useHistory
+
     
     const {userName, setPrevPrompt,input, setInput, responseContent, setResponseContent} = useContext(AppContext)
-
-
 
     // Extract userId and agencyId from authToken
     // useEffect(() => {
@@ -39,29 +44,52 @@ const Main = () => {
     // }, []);
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (!token) {
-            console.warn('No auth token found in localStorage');
-            return;
-        }
-
-        setToken(token);
-
-        try {
-            const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
-            const now = Math.floor(Date.now() / 1000); // Current timestamp in seconds
-            if (payload.exp < now) {
-                console.warn('Token has expired');
-                // Optionally redirect to login
+        const fetchChatHistory = async () => {
+            const token = localStorage.getItem('authToken');
+            if (!token) {
+                console.warn('No auth token found in localStorage');
                 return;
             }
-            setUserId(payload.id || '');
-            setAgencyId(payload.agencyId || '');
-        } catch (error) {
-            console.error('Failed to decode token:', error);
-        }
+    
+            setToken(token);
+    
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+                const now = Math.floor(Date.now() / 1000); // Current timestamp in seconds
+                if (payload.exp < now) {
+                    console.warn('Token has expired');
+                    return;
+                }
+    
+                setUserId(payload.id || '');
+                setAgencyId(payload.agencyId || '');
+    
+                // Fetch chat history
+                const response = await axios.get(
+                    `http://127.0.0.1:8000/api/v1/conversations/conversations`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token.trim()}`,
+                        },
+                    }
+                );
+    
+                console.log("conversation response", response.data.data);
+                setChatHistory(response.data.data); // Update `chatHistory`
+            } catch (error) {
+                console.error('Error fetching chat history:', error.message);
+            }
+        };
+    
+        fetchChatHistory();
     }, []);
-
+    
+    // another
+    useEffect(() => {
+        setPrevPrompt(chatHistory); // Sync chatHistory to prevPrompt
+    }, [chatHistory]);
+    
 
 
     // Delay function for word-by-word display
@@ -92,6 +120,12 @@ const Main = () => {
 
     // Function to send the user input to the API
     const sendPrompt = async () => {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            console.warn('No auth token found in localStorage');
+            navigate('/login');
+            return;
+        }
         if (!input.trim()) return;
 
         // Clear previous response and set loading state
@@ -135,7 +169,7 @@ const Main = () => {
             // Reset loading state and clear input field
             setLoading(false);
             setInput('');
-            setPrevPrompt((prev) => [...prev, input])
+            // setPrevPrompt((prev) => [...prev, input])
 
         }
     };
@@ -322,16 +356,19 @@ const Main = () => {
         });
     };
 
-
+console.log(chatHistory)
 
     return (
         <div className="flex-1 min-h-screen pb-[15vh] relative m-3">
             {/* Header */}
-            <div className="flex text-xl p-5 text-slate-700 justify-between">
+            <div className="flex text-xl p-5 text-slate-700 justify-between relative">
                 <p className="text-transparent bg-clip-text bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] text-lg font-semibold">
                     MaizBaan Ai
                 </p>
-                <FaRegUserCircle className="text-2xl text-gray-200 mr-2" />
+                <FaRegUserCircle className="text-2xl text-gray-200 mr-2" onClick={()=>setShowProfile(!showProfile)}/>
+            </div>
+            <div className={`${showProfile ? 'showProfilecss show' : 'hideProfilecss'}`}>
+              <UserProfileDetails/>
             </div>
 
             {/* Main Content */}
@@ -427,3 +464,5 @@ const Main = () => {
 };
 
 export default Main;
+
+

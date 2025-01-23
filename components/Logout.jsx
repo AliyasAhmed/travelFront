@@ -4,6 +4,9 @@ const Logout = () => {
     const handleLogout = () => {
         // Remove the token from localStorage
         localStorage.removeItem('authToken');
+        localStorage.removeItem('prevPrompt');
+        localStorage.removeItem('userName');
+
         console.log("Token removed from localStorage");
         // Redirect user or perform other actions after logout
         window.location.href = "/login"; // Example: Redirect to login page

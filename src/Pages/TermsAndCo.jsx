@@ -1,45 +1,73 @@
 import React, { useEffect } from 'react';
 
 const TermsAndCo = () => {
-    useEffect(()=>{
-        window.scrollTo(0,0);
-    },[])
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div
-      className="flex justify-center relative min-h-screen bg-cover bg-center text-white backdrop-blur-sm"
+      className="relative flex justify-center items-center min-h-screen bg-cover bg-center text-white p-8"
       style={{
-        backgroundImage:
-          'url(https://your-image-url.com)', // Replace with your own image URL
+        backgroundImage: 'url(https://your-image-url.com)', // Replace with your image URL
       }}
     >
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
       {/* Content */}
-      <div className="relative z-10 p-10 md:p-20">
-        <h1 className="flex justify-center text-4xl md:text-5xl font-bold mb-4">Terms and Conditions</h1>
-        <p className="flex justify-center text-lg md:text-xl leading-relaxed mb-6">
-          By using this website, you agree to comply with and be bound by the following terms and conditions. Please read them carefully.
+      <div className="relative z-10 max-w-5xl backdrop-blur-lg border border-gray-700 rounded-lg p-8 md:p-12 shadow-lg bg-[#0000005d] ">
+        <h1 className="text-center text-4xl md:text-5xl font-bold mb-6 text-white drop-shadow-md">
+          Terms and Conditions
+        </h1>
+        <p className="text-center text-lg md:text-xl leading-relaxed mb-10 text-gray-200">
+          By accessing and using this website, you agree to comply with and be bound by the following terms and conditions. Please read them carefully.
         </p>
 
-        {/* Terms and Conditions Content */}
-        <div className="flex flex-col text-justify space-y-6">
-          <h2 className="text-2xl font-semibold">1. Introduction</h2>
-          <p>
-            These terms and conditions govern your use of this website. By accessing this website, you agree to comply with these terms.
-          </p>
+        {/* Terms and Conditions Sections */}
+        <div className="space-y-8 text-justify text-gray-400">
+          <section>
+            <h2 className="text-2xl font-semibold text-white mb-2">1. Introduction</h2>
+            <p>
+              These terms and conditions govern your use of this website. By accessing and browsing this site, you agree to these terms.
+            </p>
+          </section>
 
-          <h2 className="text-2xl font-semibold">2. Intellectual Property</h2>
-          <p>
-            All content on this website, including but not limited to text, images, and graphics, is protected by intellectual property laws.
-          </p>
+          <section>
+            <h2 className="text-2xl font-semibold text-white mb-2">2. Intellectual Property</h2>
+            <p>
+              All content on this website, including but not limited to text, images, graphics, and logos, is protected by intellectual property laws and is the property of the website owner.
+            </p>
+          </section>
 
-          <h2 className="text-2xl font-semibold">3. User Responsibilities</h2>
-          <p>
-            You agree to use this website only for lawful purposes and in a manner that does not infringe the rights of others.
-          </p>
+          <section>
+            <h2 className="text-2xl font-semibold text-white mb-2">3. User Responsibilities</h2>
+            <p>
+              You agree to use this website only for lawful purposes. Any action that disrupts or damages the website or infringes on the rights of others is strictly prohibited.
+            </p>
+          </section>
 
-          {/* Add more sections as needed */}
+          <section>
+            <h2 className="text-2xl font-semibold text-white mb-2">4. Limitation of Liability</h2>
+            <p>
+              The website owner is not liable for any damages or losses arising from your use of this website or reliance on its content.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold text-white mb-2">5. Modifications</h2>
+            <p>
+              The website reserves the right to update or modify these terms and conditions at any time without prior notice.
+            </p>
+          </section>
+        </div>
+
+        {/* Call-to-Action Button */}
+        <div className="flex justify-center mt-8">
+          <a
+            href="/contact"
+            className="px-6 py-3 bg-primary hover:bg-primary-dark text-white font-semibold text-lg rounded-lg shadow-md transition-all duration-300"
+          >
+            Contact Us for More Info
+          </a>
         </div>
       </div>
     </div>

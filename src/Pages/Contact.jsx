@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Contact = () => {
+  useEffect(()=>{
+    window.scrollTo(0,0);
+  },[])
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -49,7 +52,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center animate-fade-in">
       <div className="w-full max-w-6xl  shadow-lg rounded-lg p-10 flex flex-col md:flex-row bg-[#00000056]">
         {/* Left - Contact Form */}
         <div className="flex-1">

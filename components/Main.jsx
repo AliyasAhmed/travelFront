@@ -529,7 +529,7 @@ const Main = () => {
 
       {/* Input Area */}
       <div className="absolute bottom-0 w-full max-w-full px-5 mx-auto my-[-15px]">
-        <div className="flex items-center justify-between gap-10 bg-transparent border border-black shadow-lg py-2 px-5 rounded-full">
+        <div className="flex items-center justify-between gap-10 bg-[#00000065] border border-[#36363662] shadow-lg py-2 px-5 rounded-full">
           <input
             className="flex-1 bg-transparent border-none outline-none p-2 text-lg placeholder:text-gray-500 placeholder:font-bold focus:ring-2 focus:ring-blue-500 rounded-md"
             type="text"
@@ -548,7 +548,7 @@ const Main = () => {
             )}
           </div>
         </div>
-        <p className="text-center text-lg text-gray-50 font-bold my-2">
+        <p className="text-center text-lg text-[#cfcfcf] font-bold my-2">
           MaizBaan_Ai can make mistakes, so double-check it
         </p>
       </div>

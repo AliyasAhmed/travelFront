@@ -421,7 +421,7 @@ console.log(chatHistory)
 
             {/* Input Area */}
             <div className="absolute bottom-0 w-full max-w-full px-5 mx-auto my-[-15px]">
-                <div className="flex items-center justify-between gap-10 bg-transparent border border-black shadow-lg py-2 px-5 rounded-full">
+                <div className="flex items-center justify-between gap-10 border border-[#4b4b4b85] backdrop-blur-lg bg-[#00000062] shadow-lg py-2 px-5 rounded-full">
                     <input
                         className="flex-1 bg-transparent border-none outline-none p-2 text-lg placeholder:text-gray-500 placeholder:font-bold focus:ring-2 focus:ring-blue-500 rounded-md"
                         type="text"

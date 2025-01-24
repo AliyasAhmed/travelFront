@@ -1,13 +1,16 @@
 import React, { useContext } from 'react';
-import { Settings, User, Crown, Search, LogOut } from 'lucide-react';
+import { Settings, User, LogOut } from 'lucide-react';
 import Logout from './Logout';
 import { AppContext } from '../context/AppContext';
 
 const UserProfileDetails = () => {
-      const { signedIn, user, setSignedIn, setUser ,showProfile, setShowProfile,userName,userId, userNumber} = useContext(AppContext);
-  
+  const { userName, userId, userNumber } = useContext(AppContext);
+
   return (
-    <div className="bg-[#2A2B32] rounded-lg shadow-lg w-[240px] py-2 text-sm text-gray-200">
+    <div
+      className="bg-[#2A2B32] rounded-lg shadow-lg w-[240px] py-2 text-sm text-gray-200 absolute top-0 right-0 z-[9999]"
+      style={{ position: 'absolute', top: '50px', right: '20px' }}
+    >
       {/* User Info Section */}
       <div className="px-4 py-2 border-b border-gray-600">
         <div className="flex items-center gap-2">
@@ -37,21 +40,11 @@ const UserProfileDetails = () => {
           User Number:<span>{userNumber}</span>
         </button>
 
-        {/* <button className="w-full px-4 py-2 flex items-center gap-3 hover:bg-gray-700">
-          <Crown size={16} />
-          <span>Upgrade Plan</span>
-        </button>
-
-        <button className="w-full px-4 py-2 flex items-center gap-3 hover:bg-gray-700">
-          <Search size={16} />
-          <span>Get ChatGPT search extension</span>
-        </button> */}
-
         <div className="border-t border-gray-600 mt-2"></div>
 
         <button className="w-full px-4 py-2 flex items-center gap-3 hover:bg-gray-700">
           <LogOut size={16} />
-          <Logout/>
+          <Logout />
         </button>
       </div>
     </div>

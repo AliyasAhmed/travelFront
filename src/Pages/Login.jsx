@@ -129,44 +129,44 @@ const Login = () => {
 
    
    // google login made by me
-   const handleGoogleLogin = async () => {
-    try {
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        console.log("Google user data:", user);
+//    const handleGoogleLogin = async () => {
+//     try {
+//         const result = await signInWithPopup(auth, provider);
+//         const user = result.user;
+//         console.log("Google user data:", user);
 
-        // Assuming your backend provides an endpoint to handle Google authentication and issue a token
-        const googleAuthResponse = await axios.post(
-            'http://127.0.0.1:8000/api/v1/users/google-login', // Replace with your backend endpoint
-            { email: user.email, googleId: user.uid },
-            { headers: { 'Content-Type': 'application/json' } }
-        );
+//         // Assuming your backend provides an endpoint to handle Google authentication and issue a token
+//         const googleAuthResponse = await axios.post(
+//             'http://127.0.0.1:8000/api/v1/users/google-login', // Replace with your backend endpoint
+//             { email: user.email, googleId: user.uid },
+//             { headers: { 'Content-Type': 'application/json' } }
+//         );
 
-        if (googleAuthResponse.status === 200) {
-            const token = googleAuthResponse.data.data.access_token;
-            localStorage.setItem('authToken', token);
-            toast.success(`Login successful! Welcome, ${user.displayName}.`);
-            console.log("Auth Token:", token);
+//         if (googleAuthResponse.status === 200) {
+//             const token = googleAuthResponse.data.data.access_token;
+//             localStorage.setItem('authToken', token);
+//             toast.success(`Login successful! Welcome, ${user.displayName}.`);
+//             console.log("Auth Token:", token);
 
-            setSignedIn(true);
-            const userEmail = user.email.split("@")[0];
-            setUserId(googleAuthResponse.data.data.id);
-            setUserNumber(googleAuthResponse.data.data.phonenumber);
-            setUserName(userEmail); // Setting userName from Google data
-            setUser(user);
+//             setSignedIn(true);
+//             const userEmail = user.email.split("@")[0];
+//             setUserId(googleAuthResponse.data.data.id);
+//             setUserNumber(googleAuthResponse.data.data.phonenumber);
+//             setUserName(userEmail); // Setting userName from Google data
+//             setUser(user);
 
-            // Redirect to the dashboard or home page
-            setTimeout(() => {
-                navigate('/userConvo');
-            }, 2000);
-        } else {
-            toast.error("Google login failed on the server. Please try again.");
-        }
-    } catch (error) {
-        console.error("Google Login Error:", error);
-        toast.error("Google login failed. Please try again.");
-    }
-};
+//             // Redirect to the dashboard or home page
+//             setTimeout(() => {
+//                 navigate('/userConvo');
+//             }, 2000);
+//         } else {
+//             toast.error("Google login failed on the server. Please try again.");
+//         }
+//     } catch (error) {
+//         console.error("Google Login Error:", error);
+//         toast.error("Google login failed. Please try again.");
+//     }
+// };
 
     return (
         <section className="p-5 flex items-center justify-center text-white">
@@ -223,14 +223,14 @@ const Login = () => {
                     <p className="text-gray-400">or</p>
                     <hr className="flex-grow border-gray-700" />
                 </div>
-                <button
+                {/* <button
                     type="button"
                     className="w-full mt-4 flex items-center justify-center gap-2 bg-blue-600 py-2 rounded-lg hover:bg-blue-500 transition"
                     onClick={handleGoogleLogin}
                 >
                     <MdOutlinePassword className="text-2xl" />
                     Log In with Google
-                </button>
+                </button> */}
                 <div className="text-center mt-6 text-sm">
                     <p>
                         Don't have an account?{" "}

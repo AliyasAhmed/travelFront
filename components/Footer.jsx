@@ -68,7 +68,7 @@ const Footer = () => {
       <div className="flex flex-wrap justify-center items-center gap-4 mt-8">
         <div className="flex gap-4 mb-4 w-full justify-center sm:w-auto">
           <a
-            href="https://facebook.com"
+            href="https://www.facebook.com/webinvolvee"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 bg-gray-800 rounded-full hover:bg-gray-600"
@@ -76,7 +76,7 @@ const Footer = () => {
             <FaFacebookF className="text-white text-lg" />
           </a>
           <a
-            href="https://instagram.com"
+            href="https://www.instagram.com/webinvolve/"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 bg-gray-800 rounded-full hover:bg-gray-600"
@@ -86,7 +86,7 @@ const Footer = () => {
         </div>
         <div className="flex gap-4 w-full justify-center sm:w-auto">
           <a
-            href="https://twitter.com"
+            href="https://x.com/webinvolve"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 bg-gray-800 rounded-full hover:bg-gray-600"
@@ -94,7 +94,7 @@ const Footer = () => {
             <FaTwitter className="text-white text-lg" />
           </a>
           <a
-            href="https://linkedin.com"
+            href="https://in.linkedin.com/company/webinvolve"
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 bg-gray-800 rounded-full hover:bg-gray-600"

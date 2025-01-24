@@ -14,37 +14,81 @@ const Login = () => {
     const navigate = useNavigate(); // Use useNavigate instead of useHistory
     const { signedIn, setSignedIn, user, setUser, userName, setUserName ,userId, setUserId,userNumber, setUserNumber} = useContext(AppContext)
 
+    
 
+    // const handleLogin = async (e) => {
+    //     e.preventDefault();
+
+    //     try {
+    //         const response = await axios.post(
+    //             'http://127.0.0.1:8000/api/v1/users/login',
+    //             { email, password },
+    //             { headers: { 'Content-Type': 'application/json' } }
+    //         );
+
+    //         if (response.status === 200) {
+    //             localStorage.setItem('authToken', response.data.data.access_token);
+    //             toast.success('Login successful!')
+    //             console.log(response.data.data)
+    //             setSignedIn(true)
+    //             const userEmail= response.data.data.data.email.split("@")[0];
+    //             setUserId(response.data.data.data.id)
+    //             setUserNumber(response.data.data.data.phonenumber)
+    //             setUserName(userEmail)
+    //             setEmail('')
+    //             setPassword('')
+
+                
+    //             // Redirect to the dashboard or home page
+    //             setSignedIn(true);
+    //             const userEmail = response.data.data.data.email.split("@")[0];
+    //             setUserName(userEmail);
+    //             setEmail('');
+    //             setPassword('');
+ 
+    //             setTimeout(() => {
+    //                 navigate('/userConvo');
+    //             }, 2000);
+    //         } else {
+    //             setError(response.data.message);
+    //             setEmail('');
+    //             setPassword('');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //         setError('An error occurred. Please try again.');
+    //         setEmail('');
+    //         setPassword('');
+    //     }
+    // };
+
+    
     const handleLogin = async (e) => {
         e.preventDefault();
-
+    
         try {
             const response = await axios.post(
                 'http://127.0.0.1:8000/api/v1/users/login',
                 { email, password },
                 { headers: { 'Content-Type': 'application/json' } }
             );
-
+    
             if (response.status === 200) {
                 localStorage.setItem('authToken', response.data.data.access_token);
-                toast.success('Login successful!')
-                console.log(response.data.data)
-                setSignedIn(true)
-                const userEmail= response.data.data.data.email.split("@")[0];
-                setUserId(response.data.data.data.id)
-                setUserNumber(response.data.data.data.phonenumber)
-                setUserName(userEmail)
-                setEmail('')
-                setPassword('')
-
-                
-                // Redirect to the dashboard or home page
+                localStorage.setItem('UserId', response.data.data.data.id);
+                localStorage.setItem('UserNumber', response.data.data.data.phonenumber);
+                toast.success('Login successful!');
+                console.log(response.data.data);
+    
                 setSignedIn(true);
-                const userEmail = response.data.data.data.email.split("@")[0];
-                setUserName(userEmail);
+                const userEmail = response.data.data.data.email.split("@")[0]; // Declare once
+                setUserId(response.data.data.data.id);
+                setUserNumber(response.data.data.data.phonenumber);
+                setUserName(userEmail); // Use the declared variable
                 setEmail('');
                 setPassword('');
- 
+    
+                // Redirect to the dashboard or home page
                 setTimeout(() => {
                     navigate('/userConvo');
                 }, 2000);
@@ -60,26 +104,69 @@ const Login = () => {
             setPassword('');
         }
     };
+    
 
-    const handleGoogleLogin = async () => {
-        try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-            console.log("Google user data:", user);
+// google login made by iliyaas
+    // const handleGoogleLogin = async () => {
+    //     try {
+    //         const result = await signInWithPopup(auth, provider);
+    //         const user = result.user;
+    //         console.log("Google user data:", user);
+
+    //         setSignedIn(true);
+    //         setUserName(user.displayName);
+    //         setUser(user);
+
+    //         toast.success(`Welcome, ${user.displayName}!`);
+    //         setTimeout(() => {
+    //             navigate('/userConvo');
+    //         }, 2000);
+    //     } catch (error) {
+    //         console.error("Google Login Error:", error);
+    //         toast.error("Google login failed. Please try again.");
+    //     }
+    // };
+
+   
+   // google login made by me
+   const handleGoogleLogin = async () => {
+    try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        console.log("Google user data:", user);
+
+        // Assuming your backend provides an endpoint to handle Google authentication and issue a token
+        const googleAuthResponse = await axios.post(
+            'http://127.0.0.1:8000/api/v1/users/google-login', // Replace with your backend endpoint
+            { email: user.email, googleId: user.uid },
+            { headers: { 'Content-Type': 'application/json' } }
+        );
+
+        if (googleAuthResponse.status === 200) {
+            const token = googleAuthResponse.data.data.access_token;
+            localStorage.setItem('authToken', token);
+            toast.success(`Login successful! Welcome, ${user.displayName}.`);
+            console.log("Auth Token:", token);
 
             setSignedIn(true);
-            setUserName(user.displayName);
+            const userEmail = user.email.split("@")[0];
+            setUserId(googleAuthResponse.data.data.id);
+            setUserNumber(googleAuthResponse.data.data.phonenumber);
+            setUserName(userEmail); // Setting userName from Google data
             setUser(user);
 
-            toast.success(`Welcome, ${user.displayName}!`);
+            // Redirect to the dashboard or home page
             setTimeout(() => {
                 navigate('/userConvo');
             }, 2000);
-        } catch (error) {
-            console.error("Google Login Error:", error);
-            toast.error("Google login failed. Please try again.");
+        } else {
+            toast.error("Google login failed on the server. Please try again.");
         }
-    };
+    } catch (error) {
+        console.error("Google Login Error:", error);
+        toast.error("Google login failed. Please try again.");
+    }
+};
 
     return (
         <section className="p-5 flex items-center justify-center text-white">

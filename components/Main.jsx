@@ -514,7 +514,7 @@ const Main = () => {
                         },
                     }
                 );
-                console.log("conversation response", response.data);
+                console.log("conversation token", token);
                 setChatHistory(response.data); // Update `chatHistory`
             } catch (error) {
                 console.error('Error fetching chat history:', error.message);

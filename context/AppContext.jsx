@@ -38,8 +38,8 @@ export const AppProvider = ({ children }) => {
     const [input, setInput] = useState('');
     const [responseContent, setResponseContent] = useState('');
     const [showProfile, setShowProfile] = useState(false);
-    const [userNumber, setUserNumber] = useState('');
-    const [userId, setUserId] = useState('');
+    const [userNumber, setUserNumber] = useState(localStorage.getItem('UserNumber') || null);
+    const [userId, setUserId] = useState(localStorage.getItem('UserId') || null);
 
     const [user, setUser] = useState(null);
     const [userName, setUserName] = useState(localStorage.getItem('userName') || null);

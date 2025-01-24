@@ -23,11 +23,18 @@ import ForgotPassword from './Pages/ForgotPassword'
 import ResetPassword from './Pages/ResetPassword'
 import UserConvo from './Pages/UserConvo'
 import AdminRoutes from './Pages/Admin/AdminRoutes'
+import Contact from "./Pages/Contact"
+
 
 // use context
 // export const Context= createContext();
 
 import { AppProvider } from '../context/AppContext';
+import TermsAndCo from './Pages/TermsAndCo'
+import PrivacyPol from './Pages/PrivacyPol'
+import About from './Pages/About'
+import Brochure from './Pages/Broucher'
+import Team from './Pages/Team'
 
 
 function App() {
@@ -59,6 +66,12 @@ function App() {
           <Route path="/forgotPassword" element={<ForgotPassword/>}/>
           <Route path="/resetPassword" element={<ResetPassword/>}/>
           <Route path="/userConvo" element={<UserConvo/>}/>
+          <Route path="/TermsAndCo" element={<TermsAndCo/>}/>
+          <Route path="/PrivacyPol" element={<PrivacyPol/>}/>
+          <Route path="/contact" element={<Contact/>}/>
+          <Route path="/About" element={<About/>}/>
+          <Route path="/Brochure" element={<Brochure/>}/>
+          <Route path="/Team" element={<Team/>}/>
           {/* admin routes */}
           <Route path='/admin/*' element={<AdminRoutes/>}/>
 

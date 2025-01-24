@@ -16,11 +16,11 @@ const Navbar = () => {
             <nav className="flex w-full justify-between items-center screen-max-width bg-transparent  ">
                 <div className='flex items-center gap-4'>
                     <h6 className=' text-lg hidden md:flex lg:flex'>Product </h6>
-                    <Link to='/'>
+                    {/* <Link to='/'>
 
                         <img src={navLogo} alt="" className='' />
 
-                    </Link>
+                    </Link> */}
                 </div>
                 <div className='hidden md:flex lg:flex'>
                     <h4 className="text-transparent bg-clip-text bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] text-lg"

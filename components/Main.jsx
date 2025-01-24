@@ -537,7 +537,7 @@ const Main = () => {
 
     const formatResponse = (text) => {
         return text
-            .replace(/#\s(.*?)\n/g, '<h1 style="color: blue; font-size: 24px;">$1</h1>') // H1
+            .replace(/#\s(.*?)\n/g, '<h1 style="color: black; font-size: 24px;">$1</h1>') // H1
             .replace(/##\s(.*?)\n/g, '<h2 style="color: green;font-size: 22px">$1</h2>') // H2
             .replace(/###\s(.*?)\n/g, '<h3 style="color: orange;">$1</h3>') // H3
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
@@ -546,7 +546,7 @@ const Main = () => {
             .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>') // Links
             .replace(/\*\s(.*?)\n/g, '<li>$1</li>') // List items
             .replace(/\n/g, '<br/>') // Line breaks
-            .replace(/(.+?)(?=<br\/>|$)/g, '<span style="color: black;">$1</span>'); // Normal text
+            .replace(/(.+?)(?=<br\/>|$)/g, '<span style="color: black ;">$1</span>'); // Normal text
     };
 
     const sendPrompt = async () => {
@@ -678,13 +678,17 @@ const Main = () => {
                         <div
                             id="responseContent"
                             style={{
-                                backgroundColor: "#ffffff",
-                                color: "#000000",
+                                backgroundColor: "white",
+                                color: "white",
                                 borderRadius: "8px",
                                 boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                                 padding: "20px",
                                 marginBottom: "20px",
-                                fontFamily: "Arial, sans-serif"
+                                fontFamily: "Arial, sans-serif",
+                                backdropFilter: "blur(15px)",
+                                height:'90vh',
+                                overflow:"scroll",
+                                overflowX:"hidden",
                             }}
                             dangerouslySetInnerHTML={{ __html: responseContent }}
                         />
@@ -724,7 +728,7 @@ const Main = () => {
             </div>
 
             {/* Input Area */}
-            <div className="absolute bottom-0 w-full max-w-full px-5 mx-auto my-[-15px]">
+            <div className="absolute bottom-0 w-full max-w-full px-5 mx-auto my-[-15px] h-[auto]">
                 <div className="flex items-center justify-between gap-10 border border-[#4b4b4b85] backdrop-blur-lg bg-[#00000062] shadow-lg py-2 px-5 rounded-full">
                     <input
                         className="flex-1 bg-transparent border-none outline-none p-2 text-lg placeholder:text-gray-500 placeholder:font-bold focus:ring-2 focus:ring-blue-500 rounded-md"
@@ -732,15 +736,20 @@ const Main = () => {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         placeholder="Ask MaizBaan_Ai"
-                    />
-                    <div className="flex gap-4 items-center">
+                        />
+                    <div className="flex gap-4 absolute right-4 items-center">
                         {/* <MdOutlineAddPhotoAlternate className="text-xl cursor-pointer" aria-label="Add Photo" />
                         <GrMicrophone className="text-xl cursor-pointer" aria-label="Microphone" /> */}
                         {input && (
+                            <button 
+                            type='submit'>
                             <VscSend
                                 className="text-xl cursor-pointer"
                                 onClick={sendPrompt}
+                                
                             />
+                            </button>
+                            
                         )}
                     </div>
                 </div>

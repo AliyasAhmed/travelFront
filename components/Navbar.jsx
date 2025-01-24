@@ -4,10 +4,11 @@ import { Link } from 'react-router-dom'
 // import { Context } from '../src/App'
 import Logout from './Logout'
 import { AppContext } from '../context/AppContext'
+import { FaRegUserCircle } from 'react-icons/fa'
 
 const Navbar = () => {
     // const [signedIn, setSignedIn] = useContext(Context)
-    const { signedIn, user, setSignedIn, setUser } = useContext(AppContext);
+    const { signedIn, user, setSignedIn, setUser ,showProfile, setShowProfile} = useContext(AppContext);
 
     
     return (
@@ -54,7 +55,9 @@ const Navbar = () => {
 
                     :
                     <div className="">
-                        <Logout/>
+                        {/* <Logout/> */}
+                <FaRegUserCircle className="text-2xl text-gray-200 mr-2" onClick={()=>setShowProfile(!showProfile)}/>
+
                     </div>
 
                 }

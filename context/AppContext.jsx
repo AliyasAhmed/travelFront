@@ -37,12 +37,13 @@ export const AppProvider = ({ children }) => {
     const [signedIn, setSignedIn] = useState(false);
     const [input, setInput] = useState('');
     const [responseContent, setResponseContent] = useState('');
+    const [showProfile, setShowProfile] = useState(false);
+    const [userNumber, setUserNumber] = useState('');
+    const [userId, setUserId] = useState('');
 
     const [user, setUser] = useState(null);
     const [userName, setUserName] = useState(localStorage.getItem('userName') || null);
-    const [prevPrompt, setPrevPrompt] = useState(
-        JSON.parse(localStorage.getItem('prevPrompt')) || []
-    );
+    const [prevPrompt, setPrevPrompt] = useState([]);
 
     // Check localStorage for token and initialize state
     useEffect(() => {
@@ -89,7 +90,14 @@ export const AppProvider = ({ children }) => {
             input,
             setInput,
             responseContent,
-            setResponseContent
+            setResponseContent,
+            showProfile,
+            setShowProfile,
+            userNumber,
+            setUserNumber,
+            userId,
+            setUserId
+
         }}>
             {children}
         </AppContext.Provider>

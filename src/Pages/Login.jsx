@@ -10,8 +10,10 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
-    const navigate = useNavigate();
-    const { signedIn, setSignedIn, user, setUser, userName, setUserName } = useContext(AppContext);
+
+    const navigate = useNavigate(); // Use useNavigate instead of useHistory
+    const { signedIn, setSignedIn, user, setUser, userName, setUserName ,userId, setUserId,userNumber, setUserNumber} = useContext(AppContext)
+
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -25,12 +27,24 @@ const Login = () => {
 
             if (response.status === 200) {
                 localStorage.setItem('authToken', response.data.data.access_token);
-                toast.success('Login successful!');
+                toast.success('Login successful!')
+                console.log(response.data.data)
+                setSignedIn(true)
+                const userEmail= response.data.data.data.email.split("@")[0];
+                setUserId(response.data.data.data.id)
+                setUserNumber(response.data.data.data.phonenumber)
+                setUserName(userEmail)
+                setEmail('')
+                setPassword('')
+
+                
+                // Redirect to the dashboard or home page
                 setSignedIn(true);
                 const userEmail = response.data.data.data.email.split("@")[0];
                 setUserName(userEmail);
                 setEmail('');
                 setPassword('');
+ 
                 setTimeout(() => {
                     navigate('/userConvo');
                 }, 2000);

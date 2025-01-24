@@ -83,8 +83,8 @@ canvas {
 
 .showProfilecss {
   position: absolute;
-  top: 48px;
-  right: 32px;
+  top: -45px;
+  right: 52px;
   opacity: 0;
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease;

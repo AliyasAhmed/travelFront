@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaFacebookF, FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="bg-gradient-to-tr from-[#000] via-[#000] to-[#0000] text-gray-100 py-8 px-5 sm:px-10  ">
+    <footer className="bg-gradient-to-tr from-[#000] via-[#000] to-[#0000] text-gray-100 py-8 px-5 sm:px-10">
       {/* Divider */}
       <div className="border border-gray-800 my-4" />
 
@@ -43,7 +45,7 @@ const Footer = () => {
               Contact Us
             </Link>
             <Link className="hover:underline cursor-pointer" to="/About">
-              About{" "}
+              About
             </Link>
           </ul>
         </div>
@@ -62,12 +64,52 @@ const Footer = () => {
         </div>
       </div>
 
+      {/* Social Media Icons */}
+      <div className="flex flex-wrap justify-center items-center gap-4 mt-8">
+        <div className="flex gap-4 mb-4 w-full justify-center sm:w-auto">
+          <a
+            href="https://www.facebook.com/webinvolvee"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 bg-gray-800 rounded-full hover:bg-gray-600"
+          >
+            <FaFacebookF className="text-white text-lg" />
+          </a>
+          <a
+            href="https://www.instagram.com/webinvolve/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 bg-gray-800 rounded-full hover:bg-gray-600"
+          >
+            <FaInstagram className="text-white text-lg" />
+          </a>
+        </div>
+        <div className="flex gap-4 w-full justify-center sm:w-auto">
+          <a
+            href="https://x.com/webinvolve"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 bg-gray-800 rounded-full hover:bg-gray-600"
+          >
+            <FaTwitter className="text-white text-lg" />
+          </a>
+          <a
+            href="https://in.linkedin.com/company/webinvolve"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 bg-gray-800 rounded-full hover:bg-gray-600"
+          >
+            <FaLinkedin className="text-white text-lg" />
+          </a>
+        </div>
+      </div>
+
       {/* Divider */}
       <div className="border border-gray-800 my-4" />
 
       {/* Copyright Section */}
       <div className="text-center text-gray-400 text-xs sm:text-sm md:text-base lg:text-lg">
-        <p>© {currentYear} WebInvolve Inc. All rights reserved.</p>{" "}
+        <p>© {currentYear} WebInvolve Inc. All rights reserved.</p>
       </div>
     </footer>
   );

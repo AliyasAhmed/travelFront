@@ -591,26 +591,26 @@ const Signup = () => {
     }
   };
 
-  const handleGoogleSignup = async () => {
-    setLoading(true);
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+  // const handleGoogleSignup = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const result = await signInWithPopup(auth, provider);
+  //     const user = result.user;
 
-      // You can get user info from here (e.g., user.email, user.displayName)
-      console.log(user);
+  //     // You can get user info from here (e.g., user.email, user.displayName)
+  //     console.log(user);
 
-      toast.success("Signup successful! Welcome to the platform.");
+  //     toast.success("Signup successful! Welcome to the platform.");
 
-      // Redirect to another page or call your backend to store user data
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Error during Google signup:", error);
-      toast.error("Something went wrong. Try again!");
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     // Redirect to another page or call your backend to store user data
+  //     navigate("/dashboard");
+  //   } catch (error) {
+  //     console.error("Error during Google signup:", error);
+  //     toast.error("Something went wrong. Try again!");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <section className="p-5 flex items-center justify-center text-white">
@@ -622,7 +622,7 @@ const Signup = () => {
         </div>
         
         {/* Google Signup Button */}
-        <button
+        {/* <button
           onClick={handleGoogleSignup}
           className="w-full mt-6 bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] text-gray-900 py-2 rounded-lg font-semibold hover:shadow-lg transition"
           disabled={loading}
@@ -633,7 +633,7 @@ const Signup = () => {
               Sign Up with Google
             </div>
           )}
-        </button>
+        </button> */}
 
         {/* Or Regular Form Signup */}
         <form onSubmit={handleSubmit}>

@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom'
 import Logout from './Logout'
 import { AppContext } from '../context/AppContext'
 import { FaRegUserCircle } from 'react-icons/fa'
-import logo from '../src/assets/ailogo.png'
+import logo from '../src/assets/maizbaanLogo.png'
+import betaLogo from '../src/assets/betaLogo.png'
 
 const Navbar = () => {
     // const [signedIn, setSignedIn] = useContext(Context)
@@ -20,9 +21,11 @@ const Navbar = () => {
                     <Link to='/'>
 
                         {/* <img src={navLogo} alt="" className='' /> */}
-                        <img className='w-[20vw] lg:w-[5vw] top-[-0.4rem] left-10 lg:top-[-15px] md:top-[-15px] absolute' src={logo} alt="" />
+                        <img className=' w-[20vw] lg:w-[5vw] top-[-0.4rem] left-10 lg:top-[-15px] md:top-[-15px] absolute opacity-80' src={logo} alt="" />
+                        <img src={betaLogo} className='animate-pulse h-[30px] '/>
 
                     </Link>
+
                 </div>
                 <div className='hidden md:flex lg:flex'>
                     <h4 className="text-transparent bg-clip-text bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] text-lg"

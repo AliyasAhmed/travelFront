@@ -323,7 +323,7 @@ const SideBar = () => {
     return (
         <>
             {/* Mobile Menu Toggle Button */}
-            <div className="lg:hidden fixed top-8 left-4 z-50">
+            <div className="lg:hidden fixed top-14 left-4 z-50">
                 {isMobileMenuOpen ? (
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 

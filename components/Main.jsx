@@ -198,110 +198,110 @@ const Main = () => {
 
     return (
         <div className="flex-1 min-h-screen pb-[15vh] relative m-3">
-  {/* Header */}
-  <div className="flex text-xl p-5 text-slate-700 justify-between relative">
-    <p className="text-transparent bg-clip-text bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] text-lg font-semibold">
-      MaizBaan Ai
-    </p>
-  </div>
+            {/* Header */}
+            <div className="flex text-xl p-5 text-slate-700 justify-between relative">
+                <p className="text-transparent bg-clip-text bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] text-lg font-semibold">
+                    MaizBaan Ai
+                </p>
+            </div>
 
-  {/* User Profile Details */}
-  {showProfile && (
-    <div
-      className="absolute z-[9999] top-[0] right-[50px]"
-      style={{ position: 'absolute' }}
-    >
-      <UserProfileDetails />
-    </div>
-  )}
+            {/* User Profile Details */}
+            {showProfile && (
+                <div
+                    className="absolute z-[9999] top-[0] right-[50px]"
+                    style={{ position: 'absolute' }}
+                >
+                    <UserProfileDetails />
+                </div>
+            )}
 
-  {/* Main Content */}
-  <div className="max-w-[900px] mx-auto relative z-[1]">
-    {loading ? (
-      <div className="py-10 px-[5%] flex flex-col items-center gap-4">
-        <div className="w-full flex flex-col gap-2">
-          <hr className="rounded-md border-none bg-gray-200 bg-gradient-to-r from-[#81cafe] via-[#ffff] to-[#81cafe] p-4 animate-scroll-bg" />
-          <hr className="rounded-md border-none bg-gray-200 bg-gradient-to-r from-[#81cafe] via-[#ffff] to-[#81cafe] p-4 animate-scroll-bg" />
-          <hr className="rounded-md border-none bg-gray-200 bg-gradient-to-r from-[#81cafe] via-[#ffff] to-[#81cafe] p-4 animate-scroll-bg" />
-          <hr className="rounded-md border-none bg-gray-200 bg-gradient-to-r from-[#81cafe] via-[#ffff] to-[#81cafe] p-4 animate-scroll-bg" />
-        </div>
-        <p className="text-lg font-medium text-gray-500">Fetching response...</p>
-      </div>
-    ) : responseContent ? (
-      <>
-        <div
-          id="responseContent"
-          className="relative z-[0]"
-          style={{
-            backgroundColor: 'white',
-            color: 'white',
-            borderRadius: '8px',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-            padding: '20px',
-            marginBottom: '20px',
-            fontFamily: 'Arial, sans-serif',
-            backdropFilter: 'blur(15px)',
-            height: '90vh',
-            overflow: 'scroll',
-            overflowX: 'hidden',
-          }}
-          dangerouslySetInnerHTML={{ __html: responseContent }}
-        />
-        <button onClick={exportToPDF} className="bg-red-500 text-white p-2 rounded mb-10">
-          Download as PDF
-        </button>
-      </>
-    ) : (
-      <>
-        <div className="my-12 text-[56px] font-semibold text-slate-500 p-5">
-          <p>
-            <span className="bg-gradient-to-r from-[#2d8890] via-[#ab838a] to-[#c65366] bg-clip-text text-transparent">
-              Hello, {userName}.
-            </span>
-          </p>
-          <p className="text-slate-400">How can I help you today?</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5">
-          <div className="h-[200px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300">
-            <p className="text-slate-700 text-lg">Give me a travel package of 3 days for Kashmir</p>
-          </div>
-          <div className="h-[200px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300">
-            <p className="text-slate-700 text-lg">Give me a travel package for Ladakh</p>
-          </div>
-          <div className="h-[200px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300">
-            <p className="text-slate-700 text-lg">What’s the weather like today at Ladakh?</p>
-          </div>
-          <div className="h-[200px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300">
-            <p className="text-slate-700 text-lg">What are the main goals of tourism at Kashmir?</p>
-          </div>
-        </div>
-      </>
-    )}
-  </div>
+            {/* Main Content */}
+            <div className="max-w-[900px] mx-auto relative z-[1]">
+                {loading ? (
+                    <div className="py-10 px-[5%] flex flex-col items-center gap-4">
+                        <div className="w-full flex flex-col gap-2">
+                            <hr className="rounded-md border-none bg-gray-200 bg-gradient-to-r from-[#81cafe] via-[#ffff] to-[#81cafe] p-4 animate-scroll-bg" />
+                            <hr className="rounded-md border-none bg-gray-200 bg-gradient-to-r from-[#81cafe] via-[#ffff] to-[#81cafe] p-4 animate-scroll-bg" />
+                            <hr className="rounded-md border-none bg-gray-200 bg-gradient-to-r from-[#81cafe] via-[#ffff] to-[#81cafe] p-4 animate-scroll-bg" />
+                            <hr className="rounded-md border-none bg-gray-200 bg-gradient-to-r from-[#81cafe] via-[#ffff] to-[#81cafe] p-4 animate-scroll-bg" />
+                        </div>
+                        <p className="text-lg font-medium text-gray-500">Fetching response...</p>
+                    </div>
+                ) : responseContent ? (
+                    <>
+                        <div
+                            id="responseContent"
+                            className="relative z-[0]"
+                            style={{
+                                backgroundColor: 'white',
+                                color: 'white',
+                                borderRadius: '8px',
+                                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                                padding: '20px',
+                                marginBottom: '20px',
+                                fontFamily: 'Arial, sans-serif',
+                                backdropFilter: 'blur(15px)',
+                                height: '90vh',
+                                overflow: 'scroll',
+                                overflowX: 'hidden',
+                            }}
+                            dangerouslySetInnerHTML={{ __html: responseContent }}
+                        />
+                        <button onClick={exportToPDF} className="bg-red-500 text-white p-2 rounded mb-10">
+                            Download as PDF
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <div className="my-12 text-[56px] font-semibold text-slate-500 p-5">
+                            <p>
+                                <span className="bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] bg-clip-text text-transparent text-lg md:text-3xl">
+                                    Hello, {userName}.
+                                </span>
+                            </p>
+                            <p className="text-slate-400 text-3xl   ">How can I help you today?</p>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5">
+                            <div className="h-[150px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300 animate-pulse">
+                                <p className="text-slate-700 text-lg">Give me a travel package of 3 days for Kashmir</p>
+                            </div>
+                            <div className="h-[150px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300 animate-pulse">
+                                <p className="text-slate-700 text-lg">Give me a travel package for Ladakh</p>
+                            </div>
+                            <div className="h-[150px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300 animate-pulse">
+                                <p className="text-slate-700 text-lg">Where to get best kashmiri cuisine in Srinagar?</p>
+                            </div>
+                            <div className="h-[150px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300 animate-pulse">
+                                <p className="text-slate-700 text-lg">Give me 3 days travel package for Gulmarg Kashmir.</p>
+                            </div>
+                        </div>
+                    </>
+                )}
+            </div>
 
-  {/* Input Area */}
-  <div className="absolute bottom-0 w-full max-w-full px-5 mx-auto my-[-15px] h-[auto]">
-    <div className="flex items-center justify-between gap-10 border border-[#4b4b4b85] backdrop-blur-lg bg-[#00000062] shadow-lg py-2 px-5 rounded-md">
-      <textarea
-        className="flex-1 bg-transparent border-none outline-none p-2 text-lg placeholder:text-gray-500 placeholder:font-bold rounded-md text-ellipsis"
-        type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Ask MaizBaan_Ai"
-      />
-      <div className="flex gap-4 items-center">
-        {input && (
-          <button type="submit" className="p-2">
-            <VscSend className="text-xl cursor-pointer" onClick={sendPrompt} />
-          </button>
-        )}
-      </div>
-    </div>
-    <p className="text-center text-lg text-gray-50 font-bold my-2">
-      MaizBaan_Ai can make mistakes, so double-check it
-    </p>
-  </div>
-</div>
+            {/* Input Area */}
+            <div className="absolute bottom-0 w-full max">
+                <div className="flex items-center justify-between gap-10 border border-[#4b4b4b85] backdrop-blur-lg bg-[#00000062] shadow-lg py-2 px-5 rounded-md">
+                    <textarea
+                        className="flex-1 bg-transparent border-none outline-none p-2 text-lg placeholder:text-gray-500 placeholder:font-bold rounded-md text-ellipsis"
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="Ask MaizBaan_Ai"
+                    />
+                    <div className="flex gap-4 items-center">
+                        {input && (
+                            <button type="submit" className="p-2">
+                                <VscSend className="text-xl cursor-pointer" onClick={sendPrompt} />
+                            </button>
+                        )}
+                    </div>
+                </div>
+                <p className="text-center text-lg text-gray-50 font-bold my-2">
+                    MaizBaan_Ai can make mistakes, so double-check it
+                </p>
+            </div>
+        </div>
 
     );
 };

@@ -140,60 +140,86 @@ const Main = () => {
     };
 
     // Export content to PDF
+    // const exportToPDF = () => {
+    //     const element = document.getElementById("responseContent");
+    //     html2canvas(element, { scale: 2 }).then((canvas) => {
+    //         const imgData = canvas.toDataURL("image/jpeg", 0.8);
+    //         const pdf = new jsPDF("p", "mm", "a4");
+    //         const pageWidth = pdf.internal.pageSize.getWidth();
+    //         const pageHeight = pdf.internal.pageSize.getHeight();
+    //         const imgWidth = pageWidth;
+    //         const imgHeight = (canvas.height * pageWidth) / canvas.width;
+
+    //         const headerHeight = 20;
+    //         pdf.setFontSize(20);
+    //         pdf.text("MaizBaan AI - Report", 10, 10);
+    //         const logo = "../src/assets/logo.jpg";
+    //         pdf.addImage(logo, "PNG", 170, 5, 30, 10);
+
+    //         const contentHeight = imgHeight;
+    //         const pageContentHeight = pageHeight - headerHeight;
+    //         const totalPages = Math.ceil(contentHeight / pageContentHeight);
+
+    //         let remainingHeight = contentHeight;
+    //         let sourceY = 0;
+    //         let currentPage = 0;
+
+    //         while (remainingHeight > 0) {
+    //             const currentHeight = Math.min(remainingHeight, pageContentHeight);
+    //             const sourceHeight = (currentHeight * canvas.height) / imgHeight;
+    //             const tempCanvas = document.createElement('canvas');
+    //             tempCanvas.width = canvas.width;
+    //             tempCanvas.height = sourceHeight;
+    //             const ctx = tempCanvas.getContext('2d');
+    //             ctx.drawImage(canvas, 0, sourceY, canvas.width, sourceHeight, 0, 0, canvas.width, sourceHeight);
+    //             const pageImgData = tempCanvas.toDataURL("image/jpeg", 0.8);
+
+    //             pdf.addImage(pageImgData, "JPEG", 0, currentPage === 0 ? headerHeight : 0, imgWidth, currentHeight);
+    //             remainingHeight -= currentHeight;
+    //             sourceY += sourceHeight;
+
+    //             if (remainingHeight > 0) {
+    //                 pdf.addPage();
+    //                 currentPage++;
+    //                 pdf.setFontSize(18);
+    //                 pdf.text("MaizBaan AI - Report", 10, 10);
+    //                 pdf.addImage(logo, "PNG", 170, 5, 30, 10);
+    //             }
+    //         }
+
+    //         pdf.save("output.pdf");
+    //     }).catch((error) => {
+    //         console.error("Error generating PDF:", error);
+    //         alert("Failed to generate PDF. Please try again.");
+    //     });
+    // };
     const exportToPDF = () => {
         const element = document.getElementById("responseContent");
-        html2canvas(element, { scale: 2 }).then((canvas) => {
-            const imgData = canvas.toDataURL("image/jpeg", 0.8);
-            const pdf = new jsPDF("p", "mm", "a4");
-            const pageWidth = pdf.internal.pageSize.getWidth();
-            const pageHeight = pdf.internal.pageSize.getHeight();
-            const imgWidth = pageWidth;
-            const imgHeight = (canvas.height * pageWidth) / canvas.width;
-
-            const headerHeight = 20;
-            pdf.setFontSize(20);
-            pdf.text("MaizBaan AI - Report", 10, 10);
-            const logo = "../src/assets/logo.jpg";
-            pdf.addImage(logo, "PNG", 170, 5, 30, 10);
-
-            const contentHeight = imgHeight;
-            const pageContentHeight = pageHeight - headerHeight;
-            const totalPages = Math.ceil(contentHeight / pageContentHeight);
-
-            let remainingHeight = contentHeight;
-            let sourceY = 0;
-            let currentPage = 0;
-
-            while (remainingHeight > 0) {
-                const currentHeight = Math.min(remainingHeight, pageContentHeight);
-                const sourceHeight = (currentHeight * canvas.height) / imgHeight;
-                const tempCanvas = document.createElement('canvas');
-                tempCanvas.width = canvas.width;
-                tempCanvas.height = sourceHeight;
-                const ctx = tempCanvas.getContext('2d');
-                ctx.drawImage(canvas, 0, sourceY, canvas.width, sourceHeight, 0, 0, canvas.width, sourceHeight);
-                const pageImgData = tempCanvas.toDataURL("image/jpeg", 0.8);
-
-                pdf.addImage(pageImgData, "JPEG", 0, currentPage === 0 ? headerHeight : 0, imgWidth, currentHeight);
-                remainingHeight -= currentHeight;
-                sourceY += sourceHeight;
-
-                if (remainingHeight > 0) {
-                    pdf.addPage();
-                    currentPage++;
-                    pdf.setFontSize(18);
-                    pdf.text("MaizBaan AI - Report", 10, 10);
-                    pdf.addImage(logo, "PNG", 170, 5, 30, 10);
-                }
-            }
-
-            pdf.save("output.pdf");
-        }).catch((error) => {
-            console.error("Error generating PDF:", error);
-            alert("Failed to generate PDF. Please try again.");
-        });
+        const originalHeight = element.style.height; // Save the original height
+        element.style.height = "auto"; // Expand to show full content
+        element.style.overflow = "visible"; // Ensure no scrollbars
+    
+        html2canvas(element, { scale: 2 })
+            .then((canvas) => {
+                const imgData = canvas.toDataURL("image/jpeg", 0.8);
+                const pdf = new jsPDF("p", "mm", "a4");
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const imgWidth = pageWidth;
+                const imgHeight = (canvas.height * pageWidth) / canvas.width;
+    
+                pdf.addImage(imgData, "JPEG", 0, 10, imgWidth, imgHeight);
+                pdf.save("output.pdf");
+            })
+            .catch((error) => {
+                console.error("Error generating PDF:", error);
+                alert("Failed to generate PDF. Please try again.");
+            })
+            .finally(() => {
+                // Restore original styles
+                element.style.height = originalHeight;
+                element.style.overflow = "scroll";
+            });
     };
-
     return (
         <div className="flex-1 min-h-screen pb-[15vh] relative m-3">
             {/* Header */}
@@ -239,7 +265,7 @@ const Main = () => {
                                 marginBottom: '20px',
                                 fontFamily: 'Arial, sans-serif',
                                 backdropFilter: 'blur(15px)',
-                                height: '90vh',
+                                height: 'auto',
                                 overflow: 'scroll',
                                 overflowX: 'hidden',
                             }}

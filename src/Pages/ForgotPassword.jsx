@@ -16,7 +16,7 @@ const ForgotPassword = () => {
   
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/users/forget-password",
+        "https://api.maizbaan.ai/api/v1/users/forget-password",
         { email }, // Payload
         { headers: { "Content-Type": "application/json" } }
       );

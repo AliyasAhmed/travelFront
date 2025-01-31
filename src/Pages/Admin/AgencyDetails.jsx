@@ -8,6 +8,8 @@ const AgencyDetails = () => {
     const [newAgencies, setNewAgencies] = useState([])
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [token, setToken] = useState('');
+    
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         agency_name: '',
@@ -20,16 +22,24 @@ const AgencyDetails = () => {
 
     // Fetch Agencies
     useEffect(() => {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            console.warn('No auth token found in localStorage');
+            return;
+        }
+
+        setToken(token);
         fetchAgencies();
     }, []);
 
     const fetchAgencies = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/v1/users/agencies');
-            setAgencies(Array.isArray(response.data.data.data) ? response.data.data.data : []); // Ensure agencies is always an array
+            const response = await axios.get('https://api.maizbaan.ai/api/v1/users/agencies');
+            console.log("newAgencies" ,response)
+
+            setAgencies(Array.isArray(response.data) ? response.data: []); // Ensure agencies is always an array
             setNewAgencies(response.data.data)
-            // console.log(newAgencies)
         } catch (error) {
             console.error('Error fetching agencies:', error);
             setError('Error fetching agencies.');
@@ -59,17 +69,27 @@ const AgencyDetails = () => {
             if (isEditing) {
                 // Update existing agency
                 const response = await axios.put(
-                    `http://127.0.0.1:8000/api/v1/users/agencies/${formData.id}`,
+                    `https://api.maizbaan.ai/api/v1/users/agencies/${formData.id}`,
                     { name: agency_name, email: agency_email, phonenumber: agency_phoneNumber },
-                    { headers: { 'Content-Type': 'application/json' } }
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token.trim()}`,
+                        },
+                    }
                 );
                 alert(response.data.message || 'Agency updated successfully!');
             } else {
                 // Create new agency
                 const response = await axios.post(
-                    'http://127.0.0.1:8000/api/v1/users/agencies',
+                    'https://api.maizbaan.ai/api/v1/users/agencies',
                     { name: agency_name, email: agency_email, phonenumber: agency_phoneNumber },
-                    { headers: { 'Content-Type': 'application/json' } }
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token.trim()}`,
+                        },
+                    }
                 );
                 alert(response.data.message || 'Agency added successfully!');
             }
@@ -89,7 +109,7 @@ const AgencyDetails = () => {
         if (window.confirm('Are you sure you want to delete this agency?')) {
             setLoading(true);
             try {
-                await axios.delete(`http://127.0.0.1:8000/api/v1/users/agencies/${id}`);
+                await axios.delete(`https://api.maizbaan.ai/api/v1/users/agencies/${id}`);
                 alert('Agency deleted successfully!');
                 fetchAgencies();
             } catch (error) {

@@ -12,7 +12,7 @@ const AgencyDetailsAgency = () => {
     // Fetch plan details when the component is mounted
     const fetchagencyDetails = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/v1/users/agencies/${id}`);
+        const response = await axios.get(`https://api.maizbaan.ai/api/v1/users/agencies/${id}`);
         // console.log(response.data.message)
         if (response.data.message === 'Agency fetched successfully') {
           setagencyDetails(response.data.data.data);

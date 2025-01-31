@@ -6,10 +6,13 @@ import { VscSend } from 'react-icons/vsc';
 import axios from 'axios';
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { toast, ToastContainer } from "react-toastify";
+
 import { AppContext } from '../context/AppContext';
 import UserProfileDetails from './UserProfileDetails';
 import Login from '../src/Pages/Login';
 import { useNavigate } from 'react-router-dom';
+import { send } from 'vite';
 
 const Main = () => {
     const [loading, setLoading] = useState(false);
@@ -17,6 +20,7 @@ const Main = () => {
     const [userId, setUserId] = useState('');
     const [agencyId, setAgencyId] = useState('');
     const [chatHistory, setChatHistory] = useState([]);
+    const [userInputHistory, setUserInputHistory] = useState('');
     const [images, setImages] = useState([]); // State to store image URLs
     const navigate = useNavigate();
 
@@ -31,12 +35,17 @@ const Main = () => {
         }
 
         setToken(token);
+        
 
         try {
             const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
             const now = Math.floor(Date.now() / 1000); // Current timestamp in seconds
             if (payload.exp < now) {
                 console.warn('Token has expired');
+                toast.error('Session expired. Please login again.');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('prevPrompt');
+                localStorage.removeItem('UserNumber');
                 return;
             }
 
@@ -54,7 +63,7 @@ const Main = () => {
 
             try {
                 const response = await axios.get(
-                    `http://127.0.0.1:8000/api/v1/conversations/conversations/user/${userId}`,
+                    `https://api.maizbaan.ai/api/v1/conversations/conversations/user/${userId}`,
                     {
                         headers: {
                             'Content-Type': 'application/json',
@@ -62,7 +71,7 @@ const Main = () => {
                         },
                     }
                 );
-                console.log("conversation token", token);
+                // console.log("conversation token", token);
                 setChatHistory(response.data);
             } catch (error) {
                 console.error('Error fetching chat history:', error.message);
@@ -75,6 +84,14 @@ const Main = () => {
     useEffect(() => {
         setPrevPrompt(chatHistory);
     }, [chatHistory]);
+
+
+    const delayPara = (index, nextWord) => {
+        setTimeout(function () {
+            setResponseContent((prev) => prev + nextWord);
+        }, 75 * index); // Delay each word by 75ms * index
+    };
+
 
     // Format response text and include images
     const formatResponse = (text, images) => {
@@ -112,10 +129,11 @@ const Main = () => {
 
         setResponseContent('');
         setLoading(true);
+        setUserInputHistory(input);
 
         try {
             const response = await axios.post(
-                `http://127.0.0.1:8000/api/v1/conversations/chats?agency_id=${agencyId}&user_id=${userId}`,
+                `https://api.maizbaan.ai/api/v1/conversations/chats?agency_id=${agencyId}&user_id=${userId}`,
                 { user_prompt: input },
                 {
                     headers: {
@@ -129,10 +147,16 @@ const Main = () => {
             const responseImages = response.data.image_url || []; // Extract image URLs
             setImages(responseImages); // Store images in state
             const formattedText = formatResponse(responseText, responseImages);
-            setResponseContent(formattedText); // Directly set the formatted text without delay loop
+            // setResponseContent(formattedText); // Directly set the formatted text without delay loop
+
+            // Simulate typing effect for the response
+            const words = formattedText.split(' ');
+            words.forEach((word, index) => {
+                delayPara(index, word + ' ');
+            });
         } catch (error) {
             console.error('Error response:', error.response ? error.response.data : error.message);
-            alert('Failed to fetch response. Please try again.');
+            toast.error('Failed to Generate response. Please try again.');
         } finally {
             setLoading(false);
             setInput('');
@@ -193,22 +217,49 @@ const Main = () => {
     //         alert("Failed to generate PDF. Please try again.");
     //     });
     // };
+
+
     const exportToPDF = () => {
         const element = document.getElementById("responseContent");
         const originalHeight = element.style.height; // Save the original height
+        const originalOverflow = element.style.overflow; // Save the original overflow
         element.style.height = "auto"; // Expand to show full content
         element.style.overflow = "visible"; // Ensure no scrollbars
-    
-        html2canvas(element, { scale: 2 })
+
+        const pdf = new jsPDF("p", "mm", "a4"); // Create a new PDF instance
+        const pageWidth = pdf.internal.pageSize.getWidth(); // Get page width
+        const pageHeight = pdf.internal.pageSize.getHeight(); // Get page height
+        const margin = 10; // Margin in mm
+        const scale = 2; // Scale for better quality
+
+        html2canvas(element, { scale })
             .then((canvas) => {
                 const imgData = canvas.toDataURL("image/jpeg", 0.8);
-                const pdf = new jsPDF("p", "mm", "a4");
-                const pageWidth = pdf.internal.pageSize.getWidth();
-                const imgWidth = pageWidth;
-                const imgHeight = (canvas.height * pageWidth) / canvas.width;
-    
-                pdf.addImage(imgData, "JPEG", 0, 10, imgWidth, imgHeight);
-                pdf.save("output.pdf");
+                const imgWidth = pageWidth - 2 * margin; // Adjust image width to fit within margins
+                const imgHeight = (canvas.height * imgWidth) / canvas.width; // Calculate image height
+
+                let position = 0; // Track the position of the content
+
+                // Add pages until all content is added
+                while (position < imgHeight) {
+                    if (position > 0) {
+                        pdf.addPage(); // Add a new page if content exceeds the current page
+                    }
+
+                    // Add the image to the PDF
+                    pdf.addImage(
+                        imgData,
+                        "JPEG",
+                        margin,
+                        margin - position,
+                        imgWidth,
+                        imgHeight
+                    );
+
+                    position += pageHeight - 2 * margin; // Move the position for the next page
+                }
+
+                pdf.save("output.pdf"); // Save the PDF
             })
             .catch((error) => {
                 console.error("Error generating PDF:", error);
@@ -217,11 +268,25 @@ const Main = () => {
             .finally(() => {
                 // Restore original styles
                 element.style.height = originalHeight;
-                element.style.overflow = "scroll";
+                element.style.overflow = originalOverflow;
             });
     };
+
+
+    const maxLength = 100; // Maximum character limit
+
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        if (value.length <= maxLength) {
+            setInput(value);
+        }
+    };
+
+    const isExceeded = input.length > maxLength; // Check if limit is exceeded
+
     return (
-        <div className="flex-1 min-h-screen pb-[15vh] relative m-3">
+        <div className="flex-1  pb-[15vh] relative m-3">
+            <ToastContainer />
             {/* Header */}
             <div className="flex text-xl p-5 text-slate-700 justify-between relative">
                 <p className="text-transparent bg-clip-text bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] text-lg font-semibold">
@@ -229,10 +294,17 @@ const Main = () => {
                 </p>
             </div>
 
+            {/* User Input History */}
+            {userInputHistory && (
+                <div className="bg-white text-gray-800 p-3 rounded-lg shadow-md mb-4 flex items-center gap-2">
+                    <strong><FaRegUserCircle className='text-2xl  mr-4' /></strong> {userInputHistory}
+                </div>
+            )}
+
             {/* User Profile Details */}
             {showProfile && (
                 <div
-                    className="absolute z-[9999] top-[0] right-[50px]"
+                    className="absolute z-[9999] top-[-70px] right-[-20px] md:right-[50px]"
                     style={{ position: 'absolute' }}
                 >
                     <UserProfileDetails />
@@ -249,7 +321,7 @@ const Main = () => {
                             <hr className="rounded-md border-none bg-gray-200 bg-gradient-to-r from-[#81cafe] via-[#ffff] to-[#81cafe] p-4 animate-scroll-bg" />
                             <hr className="rounded-md border-none bg-gray-200 bg-gradient-to-r from-[#81cafe] via-[#ffff] to-[#81cafe] p-4 animate-scroll-bg" />
                         </div>
-                        <p className="text-lg font-medium text-gray-500">Fetching response...</p>
+                        <p className="text-lg font-medium text-gray-500">Generating response...</p>
                     </div>
                 ) : responseContent ? (
                     <>
@@ -271,10 +343,13 @@ const Main = () => {
                             }}
                             dangerouslySetInnerHTML={{ __html: responseContent }}
                         />
-                        <button onClick={exportToPDF} className="bg-red-500 text-white p-2 rounded mb-10">
+                        <button
+                            onClick={exportToPDF}
+                            className=" bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] text-gray-800 font-bold p-2 rounded mb-10"
+                        >
                             Download as PDF
                         </button>
-                        {images.map((imageUrl, index) => (
+                        {/* {images.map((imageUrl, index) => (
                             <a
                                 key={index}
                                 href={imageUrl}
@@ -283,29 +358,36 @@ const Main = () => {
                             >
                                 Download Image {index + 1}
                             </a>
-                        ))}
+                        ))} */}
                     </>
                 ) : (
                     <>
-                        <div className="my-12 text-[56px] font-semibold text-slate-500 p-5">
-                            <p>
-                                <span className="bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] bg-clip-text text-transparent text-lg md:text-3xl">
-                                    Hello, {userName}.
-                                </span>
+                        <div className=" text-[56px] font-semibold text-slate-500 px-5">
+                            <p
+                                className="bg-gradient-to-r from-[#A96F44] to-[#F2ECB6] bg-clip-text text-transparent text-lg md:text-3xl">
+                                Hello, {userName}.
+
                             </p>
                             <p className="text-slate-400 text-3xl">How can I help you today?</p>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-5">
-                            <div className="h-[150px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300 animate-pulse">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-5">
+                            {/* Always show this div on all screen sizes */}
+                            <div className="h-[150px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300 animate-pulse" onClick={sendPrompt}>
                                 <p className="text-slate-700 text-lg">Give me a travel package of 3 days for Kashmir</p>
                             </div>
+
+                            {/* Show this div on small screens and above */}
                             <div className="h-[150px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300 animate-pulse">
                                 <p className="text-slate-700 text-lg">Give me a travel package for Ladakh</p>
                             </div>
-                            <div className="h-[150px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300 animate-pulse">
+
+                            {/* Show this div only on medium screens and above */}
+                            <div className="hidden sm:block h-[150px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300 animate-pulse">
                                 <p className="text-slate-700 text-lg">Where to get best Kashmiri cuisine in Srinagar?</p>
                             </div>
-                            <div className="h-[150px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300 animate-pulse">
+
+                            {/* Show this div only on medium screens and above */}
+                            <div className="hidden sm:block h-[150px] p-4 bg-gradient-to-b from-green-400 rounded-lg relative cursor-pointer hover:bg-gray-300 animate-pulse">
                                 <p className="text-slate-700 text-lg">Give me 3 days travel package for Gulmarg Kashmir.</p>
                             </div>
                         </div>
@@ -314,15 +396,29 @@ const Main = () => {
             </div>
 
             {/* Input Area */}
-            <div className="absolute bottom-0 w-full max">
-                <div className="flex items-center justify-between gap-10 border border-[#4b4b4b85] backdrop-blur-lg bg-[#00000062] shadow-lg py-2 px-5 rounded-md">
+            <div className="absolute sm:bottom-5 md:bottom-0 w-full max ">
+                <div className="flex items-center justify-between gap-5 border border-[#4b4b4b85] backdrop-blur-lg bg-[#00000062] shadow-lg py-2 px-5 rounded-md">
                     <textarea
-                        className="flex-1 bg-transparent border-none outline-none p-2 text-lg placeholder:text-gray-500 placeholder:font-bold rounded-md text-ellipsis"
+                        className={`flex-1 bg-transparent border border-gray-300 outline-none p-2 text-lg placeholder:text-gray-500 placeholder:font-bold rounded-md text-ellipsis w-full ${isExceeded ? "border-red-500 text-red-500" : ""
+                            }`}
                         type="text"
                         value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        placeholder="Ask MaizBaan_Ai"
+                        onChange={handleInputChange}
+                        placeholder="Ask MaizBaan"
+                        maxLength={maxLength} // Enforce limit
                     />
+
+                    {/* <div className="text-sm mt-1">
+                        <span className={isExceeded ? "text-red-500" : ""}>
+                            {input.length}/{maxLength}
+                        </span>
+                        {isExceeded && (
+                            <span className="text-red-500 ml-2">
+                                Warning: Maximum limit exceeded!
+                            </span>
+                        )}
+                    </div> */}
+
                     <div className="flex gap-4 items-center">
                         {input && (
                             <button type="submit" className="p-2">
@@ -331,11 +427,13 @@ const Main = () => {
                         )}
                     </div>
                 </div>
-                <p className="text-center text-lg text-gray-50 font-bold my-2">
-                    MaizBaan_Ai can make mistakes, so double-check it
+                <p className="text-center text-lg text-gray-200 font-bold my-2">
+                    MaizBaan can make mistakes
                 </p>
             </div>
+
         </div>
+
     );
 };
 

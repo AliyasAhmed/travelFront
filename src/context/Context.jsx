@@ -15,12 +15,7 @@ const ContextProvider = (props) => {
     const [resultData, setResultData] = useState("")
     const [signedIn, setSignedIn] = useState(false)
 
-    const delayPara = (index, nextWord) => {
-        setTimeout(function () {
-            setResultData((prev) => prev + nextWord)
-        }, 75 * index)
-    }
-
+   
     const newChat =()=>{
         setLoading(false)
         setShowResult(false)

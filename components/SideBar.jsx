@@ -323,7 +323,7 @@ const SideBar = () => {
     return (
         <>
             {/* Mobile Menu Toggle Button */}
-            <div className="lg:hidden fixed top-14 left-4 z-50">
+            <div className="lg:hidden fixed top-6 left-4 z-50">
                 {isMobileMenuOpen ? (
                     <svg 
                         xmlns="http://www.w3.org/2000/svg" 
@@ -358,7 +358,7 @@ const SideBar = () => {
             `}>
                 <div className="min-h-screen flex flex-col justify-between py-[25px] px-[15px]">
                     <div>
-                        <div className="mt-4">
+                        <div className="mt-20 md:mt-5">
                             <p className="mt-7 mb-5">Recent</p>
                             <ul className="flex flex-col gap-2">
                                 {currentItems?.map((item, index) => (
@@ -401,7 +401,7 @@ const SideBar = () => {
                     
                     <div className="flex flex-col">
       {/* Contact */}
-      <Link
+      {/* <Link
         to="/contact" // Path for the Contact page
         className="flex items-center gap-4 my-1 p-2 pr-10 rounded-[50px] cursor-pointer text-white hover:bg-gray-400"
       >
@@ -420,10 +420,10 @@ const SideBar = () => {
           />
         </svg>
         <p>Contact</p>
-      </Link>
+      </Link> */}
 
       {/* About */}
-      <Link
+      {/* <Link
         to="/about" // Path for the About page
         className="flex items-center gap-4 p-2 pr-10 rounded-[50px] cursor-pointer text-white hover:bg-gray-400"
       >
@@ -442,10 +442,10 @@ const SideBar = () => {
           />
         </svg>
         <p>About</p>
-      </Link>
+      </Link> */}
 
       {/* Team */}
-      <Link
+      {/* <Link
         to="/team" // Path for the Team page
         className="flex items-center gap-4 p-2 pr-10 rounded-[50px] cursor-pointer text-white hover:bg-gray-400"
       >
@@ -464,7 +464,7 @@ const SideBar = () => {
           />
         </svg>
         <p>Team</p>
-      </Link>
+      </Link> */}
     </div>
                 </div>
             </div>

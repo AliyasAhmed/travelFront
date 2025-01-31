@@ -46,7 +46,7 @@ const ResetPassword = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/users/reset-password",
+        "https://api.maizbaan.ai/api/v1/users/reset-password",
         { token, new_password: password },
         { headers: { "Content-Type": "application/json" } }
       );

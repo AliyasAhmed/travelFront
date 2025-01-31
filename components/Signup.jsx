@@ -33,7 +33,7 @@
 //   const fetchAgencies = async () => {
 //     setLoading(true);
 //     try {
-//       const response = await axios.get('http://127.0.0.1:8000/api/v1/users/agencies');
+//       const response = await axios.get('https://api.maizbaan.ai/api/v1/users/agencies');
 //       setAgencies(Array.isArray(response.data) ? response.data : []); // Ensure agencies is always an array
 //       // setNewAgencies(response.data.data)
 //       console.log("agencies response",response  )
@@ -66,7 +66,7 @@
 
 //     try {
 //       const response = await axios.post(
-//         "http://127.0.0.1:8000/api/v1/users/signup",
+//         "https://api.maizbaan.ai/api/v1/users/signup",
 //         {
 //           email: formData.email,
 //           password: formData.password,
@@ -291,7 +291,7 @@
 //   const fetchAgencies = async () => {
 //     setLoading(true);
 //     try {
-//       const response = await axios.get("http://127.0.0.1:8000/api/v1/users/agencies");
+//       const response = await axios.get("https://api.maizbaan.ai/api/v1/users/agencies");
 //       setAgencies(Array.isArray(response.data) ? response.data : []);
 //     } catch (error) {
 //       console.error("Error fetching agencies:", error);
@@ -334,7 +334,7 @@
 //       };
 
 //       const response = await axios.post(
-//         "http://127.0.0.1:8000/api/v1/users/signup",
+//         "https://api.maizbaan.ai/api/v1/users/signup",
 //         payload
 //       );
 
@@ -522,7 +522,7 @@ const Signup = () => {
   const fetchAgencies = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/v1/users/agencies");
+      const response = await axios.get("https://api.maizbaan.ai/api/v1/users/agencies");
       setAgencies(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error("Error fetching agencies:", error);
@@ -565,7 +565,7 @@ const Signup = () => {
       };
 
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/users/signup",
+        "https://api.maizbaan.ai/api/v1/users/signup",
         payload
       );
 

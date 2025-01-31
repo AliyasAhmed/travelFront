@@ -21,7 +21,7 @@ const Login = () => {
 
     //     try {
     //         const response = await axios.post(
-    //             'http://127.0.0.1:8000/api/v1/users/login',
+    //             'https://api.maizbaan.ai/api/v1/users/login',
     //             { email, password },
     //             { headers: { 'Content-Type': 'application/json' } }
     //         );
@@ -68,7 +68,7 @@ const Login = () => {
     
         try {
             const response = await axios.post(
-                'http://127.0.0.1:8000/api/v1/users/login',
+                'https://api.maizbaan.ai/api/v1/users/login',
                 { email, password },
                 { headers: { 'Content-Type': 'application/json' } }
             );
@@ -137,7 +137,7 @@ const Login = () => {
 
 //         // Assuming your backend provides an endpoint to handle Google authentication and issue a token
 //         const googleAuthResponse = await axios.post(
-//             'http://127.0.0.1:8000/api/v1/users/google-login', // Replace with your backend endpoint
+//             'https://api.maizbaan.ai/api/v1/users/google-login', // Replace with your backend endpoint
 //             { email: user.email, googleId: user.uid },
 //             { headers: { 'Content-Type': 'application/json' } }
 //         );

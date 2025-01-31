@@ -12,7 +12,7 @@ const PlanDetailsPlan = () => {
     // Fetch plan details when the component is mounted
     const fetchPlanDetails = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/v1/plans/plans/${id}`);
+        const response = await axios.get(`https://api.maizbaan.ai/api/v1/plans/plans/${id}`);
         if (response.data.message === 'Plan fetched successfully') {
           setPlanDetails(response.data.data);
         } else {

@@ -9,6 +9,7 @@ const PlanDetails = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+        const [token, setToken] = useState('');
 
 
     const navigate = useNavigate();
@@ -54,14 +55,19 @@ const PlanDetails = () => {
             if (isEditing) {
                 // Make PUT request for editing
                 const response = await axios.put(
-                    `http://127.0.0.1:8000/api/v1/plans/plans/${formData.id}`,
+                    `https://api.maizbaan.ai/api/v1/plans/plans/${formData.id}`,
                     {
                         ...formData,
                         plan_price: Number(formData.plan_price),
                         plan_duration: Number(formData.plan_duration),
                         user_id: Number(formData.user_id),
                     },
-                    { headers: { 'Content-Type': 'application/json' } }
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token.trim()}`,
+                        },
+                    }
                 );
 
                 if (response.data.message === 'Plan updated successfully') {
@@ -77,14 +83,19 @@ const PlanDetails = () => {
             } else {
                 // Make POST request for adding a new plan
                 const response = await axios.post(
-                    "http://127.0.0.1:8000/api/v1/plans/plans",
+                    "https://api.maizbaan.ai/api/v1/plans/plans",
                     {
                         ...formData,
                         plan_price: Number(formData.plan_price),
                         plan_duration: Number(formData.plan_duration),
                         user_id: Number(formData.user_id),
                     },
-                    { headers: { 'Content-Type': 'application/json' } }
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token.trim()}`,
+                        },
+                    }
                 );
 
                 if (response.data.message === 'Plan created successfully') {
@@ -112,7 +123,15 @@ const PlanDetails = () => {
         }
     };
 
-    useEffect(() => { fetchPlans() }, [])
+    useEffect(() => { 
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            console.warn('No auth token found in localStorage');
+            return;
+        }
+
+        setToken(token);
+        fetchPlans() }, [])
 
 
 
@@ -122,7 +141,7 @@ const PlanDetails = () => {
         if (!confirmDelete) return;
 
         try {
-            const response = await axios.delete(`http://127.0.0.1:8000/api/v1/plans/plans/${id}`);
+            const response = await axios.delete(`https://api.maizbaan.ai/api/v1/plans/plans/${id}`);
             if (response.data.message === 'Plan deleted successfully') {
                 alert("Plan deleted successfully");
                 setPlans((prevPlans) => prevPlans.filter((plan) => plan.id !== id));
@@ -180,7 +199,7 @@ const PlanDetails = () => {
     const fetchPlans = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://127.0.0.1:8000/api/v1/plans/plans');
+            const response = await axios.get('https://api.maizbaan.ai/api/v1/plans/plans');
             setPlans(response.data.data);
         } catch (error) {
             console.error('Error fetching plans:', error);

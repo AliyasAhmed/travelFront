@@ -12,7 +12,7 @@ import { AppContext } from '../context/AppContext';
 import UserProfileDetails from './UserProfileDetails';
 import Login from '../src/Pages/Login';
 import { useNavigate } from 'react-router-dom';
-import { send } from 'vite';
+
 
 const Main = () => {
     const [loading, setLoading] = useState(false);
@@ -24,42 +24,121 @@ const Main = () => {
     const [images, setImages] = useState([]); // State to store image URLs
     const navigate = useNavigate();
 
-    const { userName, setPrevPrompt, input, setInput, responseContent, setResponseContent, showProfile, setShowProfile } = useContext(AppContext);
+    const { userName, setPrevPrompt, input, setInput, responseContent, setResponseContent, showProfile, setShowProfile , setUser , setSignedIn} = useContext(AppContext);
+
+
+    // Function to check if token is expired
+    const isTokenExpired = (token) => {
+        if (!token) return true;
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const now = Math.floor(Date.now() / 1000);
+            return payload.exp < now;
+        } catch (error) {
+            console.error('Error checking token expiration:', error);
+            return true;
+        }
+    };
+
+    const handleTokenExpiration = () => {
+        toast.error('Session expired. Please login again.');
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('prevPrompt');
+        localStorage.removeItem('UserNumber');
+        setSignedIn(false)
+        setUser(null)
+        setShowProfile(false)
+        navigate('/login');
+    };
+
 
     // Extract userId and agencyId from token
+    // useEffect(() => {
+    //     const token = localStorage.getItem('authToken');
+    //     if (!token) {
+    //         console.warn('No auth token found in localStorage');
+    //         return;
+    //     }
+
+    //     setToken(token);
+        
+
+    //     try {
+    //         const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+    //         const now = Math.floor(Date.now() / 1000); // Current timestamp in seconds
+    //         if (payload.exp < now) {
+    //             console.warn('Token has expired');
+    //             toast.error('Session expired. Please login again.');
+    //             localStorage.removeItem('userName');
+    //             localStorage.removeItem('prevPrompt');
+    //             localStorage.removeItem('UserNumber');
+    //             return;
+    //         }
+
+    //         setUserId(payload.id || '');
+    //         setAgencyId(payload.agencyId || '');
+    //     } catch (error) {
+    //         console.error('Error decoding token:', error.message);
+    //     }
+    // }, []);
+
     useEffect(() => {
         const token = localStorage.getItem('authToken');
-        if (!token) {
-            console.warn('No auth token found in localStorage');
+        if (!token || isTokenExpired(token)) {
+            handleTokenExpiration();
             return;
         }
 
         setToken(token);
-        
 
         try {
-            const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
-            const now = Math.floor(Date.now() / 1000); // Current timestamp in seconds
-            if (payload.exp < now) {
-                console.warn('Token has expired');
-                toast.error('Session expired. Please login again.');
-                localStorage.removeItem('userName');
-                localStorage.removeItem('prevPrompt');
-                localStorage.removeItem('UserNumber');
-                return;
-            }
-
+            const payload = JSON.parse(atob(token.split('.')[1]));
             setUserId(payload.id || '');
             setAgencyId(payload.agencyId || '');
         } catch (error) {
             console.error('Error decoding token:', error.message);
+            handleTokenExpiration();
         }
     }, []);
 
+
+
     // Fetch chat history
+    // useEffect(() => {
+    //     const fetchChatHistory = async () => {
+    //         if (!userId || !agencyId) return;
+
+    //         try {
+    //             const response = await axios.get(
+    //                 `https://api.maizbaan.ai/api/v1/conversations/conversations/user/${userId}`,
+    //                 {
+    //                     headers: {
+    //                         'Content-Type': 'application/json',
+    //                         'Authorization': `Bearer ${token.trim()}`,
+    //                     },
+    //                 }
+    //             );
+    //             // console.log("conversation token", token);
+    //             setChatHistory(response.data);
+    //         } catch (error) {
+    //             console.error('Error fetching chat history:', error.message);
+    //         }
+    //     };
+
+    //     fetchChatHistory();
+    // }, [userId, agencyId, token]);
+
+
     useEffect(() => {
         const fetchChatHistory = async () => {
             if (!userId || !agencyId) return;
+
+            const currentToken = localStorage.getItem('authToken');
+            if (!currentToken || isTokenExpired(currentToken)) {
+                handleTokenExpiration();
+                return;
+            }
 
             try {
                 const response = await axios.get(
@@ -67,19 +146,24 @@ const Main = () => {
                     {
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token.trim()}`,
+                            'Authorization': `Bearer ${currentToken.trim()}`,
                         },
                     }
                 );
-                // console.log("conversation token", token);
                 setChatHistory(response.data);
             } catch (error) {
                 console.error('Error fetching chat history:', error.message);
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                    handleTokenExpiration();
+                }
             }
         };
 
         fetchChatHistory();
-    }, [userId, agencyId, token]);
+    }, [userId, agencyId]);
+
+
+
 
     useEffect(() => {
         setPrevPrompt(chatHistory);
@@ -118,13 +202,61 @@ const Main = () => {
     };
 
     // Send prompt to the server
-    const sendPrompt = async () => {
+    // const sendPrompt = async () => {
+    //     const token = localStorage.getItem('authToken');
+    //     if (!token) {
+    //         console.warn('No auth token found in localStorage');
+    //         navigate('/login');
+    //         return;
+    //     }
+    //     if (!input.trim()) return;
+
+    //     setResponseContent('');
+    //     setLoading(true);
+    //     setUserInputHistory(input);
+
+    //     try {
+    //         const response = await axios.post(
+    //             `https://api.maizbaan.ai/api/v1/conversations/chats?agency_id=${agencyId}&user_id=${userId}`,
+    //             { user_prompt: input },
+    //             {
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                     'Authorization': `Bearer ${token.trim()}`,
+    //                 },
+    //             }
+    //         );
+
+    //         const responseText = response.data.content;
+    //         const responseImages = response.data.image_url || []; // Extract image URLs
+    //         setImages(responseImages); // Store images in state
+    //         const formattedText = formatResponse(responseText, responseImages);
+    //         // setResponseContent(formattedText); // Directly set the formatted text without delay loop
+
+    //         // Simulate typing effect for the response
+    //         const words = formattedText.split(' ');
+    //         words.forEach((word, index) => {
+    //             delayPara(index, word + ' ');
+    //         });
+    //     } catch (error) {
+    //         console.error('Error response:', error.response ? error.response.data : error.message);
+    //         toast.error('Failed to Generate response. Please try again.');
+    //     } finally {
+    //         setLoading(false);
+    //         setInput('');
+    //     }
+    // };
+
+
+
+       // Modified sendPrompt function
+       const sendPrompt = async () => {
         const token = localStorage.getItem('authToken');
-        if (!token) {
-            console.warn('No auth token found in localStorage');
-            navigate('/login');
+        if (!token || isTokenExpired(token)) {
+            handleTokenExpiration();
             return;
         }
+
         if (!input.trim()) return;
 
         setResponseContent('');
@@ -144,19 +276,21 @@ const Main = () => {
             );
 
             const responseText = response.data.content;
-            const responseImages = response.data.image_url || []; // Extract image URLs
-            setImages(responseImages); // Store images in state
+            const responseImages = response.data.image_url || [];
+            setImages(responseImages);
             const formattedText = formatResponse(responseText, responseImages);
-            // setResponseContent(formattedText); // Directly set the formatted text without delay loop
 
-            // Simulate typing effect for the response
             const words = formattedText.split(' ');
             words.forEach((word, index) => {
                 delayPara(index, word + ' ');
             });
         } catch (error) {
             console.error('Error response:', error.response ? error.response.data : error.message);
-            toast.error('Failed to Generate response. Please try again.');
+            if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                handleTokenExpiration();
+            } else {
+                toast.error('Failed to Generate response. Please try again.');
+            }
         } finally {
             setLoading(false);
             setInput('');
@@ -301,7 +435,7 @@ const Main = () => {
                 </div>
             )}
 
-            {/* User Profile Details */}
+            {/* User Profile Details
             {showProfile && (
                 <div
                     className="absolute z-[9999] top-[-70px] right-[-20px] md:right-[50px]"
@@ -309,7 +443,7 @@ const Main = () => {
                 >
                     <UserProfileDetails />
                 </div>
-            )}
+            )} */}
 
             {/* Main Content */}
             <div className="max-w-[900px] mx-auto relative z-[1]">
@@ -406,6 +540,12 @@ const Main = () => {
                         onChange={handleInputChange}
                         placeholder="Ask MaizBaan"
                         maxLength={maxLength} // Enforce limit
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" && !e.shiftKey) {
+                              e.preventDefault(); // Prevents new lines in the textarea
+                              sendPrompt(); // Calls the function to submit input
+                            }
+                          }}
                     />
 
                     {/* <div className="text-sm mt-1">

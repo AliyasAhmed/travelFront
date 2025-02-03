@@ -95,6 +95,19 @@ canvas {
   transform: translateY(0);
 }
 
+
+@keyframes rotate {
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+.rot{
+  animation: rotate 5s linear infinite;
+}
+
 .hideProfilecss {
   position: absolute;
   top: -1000px;

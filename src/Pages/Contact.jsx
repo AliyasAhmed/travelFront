@@ -22,7 +22,7 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const apiUrl = "https://your-backend-url.com/send-query";
+    const apiUrl = "https://formspree.io/f/xrbekkgd";
 
     try {
       const response = await fetch(apiUrl, {
@@ -41,7 +41,7 @@ const Contact = () => {
           email: "",
           company: "",
           website: "",
-          service: "",
+          message: "",
         });
       } else {
         setResponse("Failed to send your message. Please try again.");
@@ -118,16 +118,16 @@ const Contact = () => {
             <div>
               <input
                 type="text"
-                name="service"
-                value={formData.service}
+                name="message"
+                value={formData.message}
                 onChange={handleInputChange}
-                placeholder="Service"
+                placeholder="message"
                 className="w-full p-3 border border-gray-300 rounded bg-[#0000003a] text-white"
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white p-3 rounded font-bold hover:bg-blue-700 borderborder-[#4d4d4d80]"
+              className="bg-[#0000004f] w-full bg-blue-600 text-white p-3 rounded font-bold hover:bg-blue-700 borderborder-[#4d4d4d80]"
             >
               Submit
             </button>

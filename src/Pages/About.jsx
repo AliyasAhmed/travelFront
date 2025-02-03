@@ -6,17 +6,34 @@ const About = () => {
   }, []);
 
   return (
-    <div
-      className="relative flex justify-center items-center min-h-screen bg-cover bg-center text-white p-10"
-      style={{
-        backgroundImage: "url(https://your-image-url.com)", // Replace with your image URL
-      }}
-    >
-      {/* Content */}
-      <div className="relative z-10 p-8 md:p-12 max-w-4xl backdrop-blur-lg border border-gray-700 rounded-xl shadow-lg animate-fade-in bg-[#0000005d]">
-        <h1 className="text-center text-4xl md:text-5xl font-extrabold mb-6 text-white drop-shadow-md">
-          About Us
-        </h1>
+    <div className="relative min-h-screen bg-[#0a192f3a] text-white">
+      {/* Hero Section */}
+      <div className="text-center p-12 md:p-20">
+        <h1 className="text-6xl font-extrabold uppercase">webinvolve</h1>
+        <p className="mt-4 text-lg text-gray-200 max-w-2xl mx-auto">
+          Software Company
+        </p>
+      </div>
+
+      {/* About Section */}
+      <div className=" px-10 md:px-20 py-10 bg-[#00000065] text-center">
+        <h2 className="text-4xl font-bold text-white">WHAT WE DO</h2>
+        <p className="text-lg text-gray-200 mt-4 max-w-3xl mx-auto">
+          Technology-driven, music distribution, record label, and rights management.
+        </p>
+      </div>
+
+      {/* Artists Section */}
+      <div className="px-10 md:px-20 py-10 text-center">
+        <h2 className="text-4xl font-bold">EVERY Design IS DIFFERENT</h2>
+        <div className="flex justify-center gap-10 mt-8 mx-auto">
+          <img src=".\src\assets\maizbaanLogo.png" alt="Design" className="invert[1] w-[20rem] rot" />
+        </div>
+      </div>
+
+      {/* Data & Analytics Section */}
+      <div className="px-10 md:px-20 py-10 bg-[#00000065] text-center">
+        <h2 className="text-4xl font-bold text-white">About Us</h2>
         <p className="text-justify text-lg md:text-xl leading-relaxed mb-6 text-gray-200">
           Welcome to Web Involve, your leading digital solution company,
           headquartered in the gorgeous region of Kashmir, kashmir. Our
@@ -62,14 +79,21 @@ const About = () => {
           dedicated to your success. Together, let's make your aspirations a
           reality
         </p>
-        <div className="flex justify-center mt-8">
-          <a
-            href="/contact"
-            className="px-8 py-3 bg-primary hover:bg-primary-dark text-white font-semibold text-lg rounded-lg shadow-md transition-all duration-300"
-          >
+      </div>
+
+      {/* Call to Action */}
+      <div className="text-center py-16">
+        <h2 className="text-3xl font-semibold">Join Our Revolution</h2>
+        <p className="text-gray-800 mt-4 max-w-lg mx-auto">
+          Want to be part of something big? Let’s make history together.
+        </p>
+
+       
+        <div className="flex justify-center mt-6 px-6 py-3 w-[15rem] mx-auto bg-yellow-400 text-black rounded-lg hover:bg-yellow-500 transition">
+          <a href='/contact' >
             Contact Us
           </a>
-        </div>
+          </div>
       </div>
     </div>
   );

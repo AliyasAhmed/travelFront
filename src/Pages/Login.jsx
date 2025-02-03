@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import { AppContext } from "../../context/AppContext";
 import { auth, provider, signInWithPopup } from "../../firebaseConfig"; 
+import apiClient from "../../components/apiClient";
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -67,16 +68,16 @@ const Login = () => {
         e.preventDefault();
     
         try {
-            const response = await axios.post(
-                'https://api.maizbaan.ai/api/v1/users/login',
+            const response = await apiClient.post(
+                '/api/v1/users/login',
                 { email, password },
                 { headers: { 'Content-Type': 'application/json' } }
             );
     
             if (response.status === 200) {
                 localStorage.setItem('authToken', response.data.data.access_token);
-                localStorage.setItem('UserId', response.data.data.data.id);
-                localStorage.setItem('UserNumber', response.data.data.data.phonenumber);
+                // localStorage.setItem('UserId', response.data.data.data.id);
+                // localStorage.setItem('UserNumber', response.data.data.data.phonenumber);
                 toast.success('Login successful!');
                 console.log(response.data.data);
     

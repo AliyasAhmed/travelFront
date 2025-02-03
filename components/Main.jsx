@@ -12,7 +12,6 @@ import { AppContext } from '../context/AppContext';
 import UserProfileDetails from './UserProfileDetails';
 import Login from '../src/Pages/Login';
 import { useNavigate } from 'react-router-dom';
-import { send } from 'vite';
 
 const Main = () => {
     const [loading, setLoading] = useState(false);

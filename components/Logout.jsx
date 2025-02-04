@@ -3,9 +3,11 @@ import React from "react";
 const Logout = () => {
     const handleLogout = () => {
         // Remove the token from localStorage
+        localStorage.clear();
         localStorage.removeItem('authToken');
         localStorage.removeItem('prevPrompt');
         localStorage.removeItem('userName');
+        localStorage.removeItem('chatHistory');
 
         console.log("Token removed from localStorage");
         // Redirect user or perform other actions after logout

@@ -35,6 +35,7 @@ import PrivacyPol from './Pages/PrivacyPol'
 import About from './Pages/About'
 import Brochure from './Pages/Broucher'
 import Team from './Pages/Team'
+import Landingpage from './Pages/LandingPage'
 
 
 function App() {
@@ -51,7 +52,7 @@ function App() {
         <Navbar />
 
         <Routes>
-          <Route path="/" element={<UserConvo />} />
+          <Route path="/" element={<Landingpage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/adminLogin" element={<AdminLogin />} />
@@ -79,7 +80,6 @@ function App() {
           
         </Routes>
 
-        <Footer />
 
       </BrowserRouter>
       </AppProvider>

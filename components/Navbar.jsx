@@ -5,7 +5,6 @@ import { FaRegUserCircle } from "react-icons/fa";
 
 import logo from "../src/assets/maizbaanLogo.png";
 import DarkMode from "../src/Pages/darkmode";
-import AuthSection from "./AuthSection";
 // import betaLogo from '../src/assets/betaLogo.png'
 
 const Navbar = () => {

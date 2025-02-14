@@ -1,72 +1,111 @@
 
+// import React, { createContext, useState, useEffect } from "react";
+
+// export const AppContext = createContext();
+
+// export const AppProvider = ({ children }) => {
+//     const [signedIn, setSignedIn] = useState(false);
+//     const [input, setInput] = useState('');
+//     const [responseContent, setResponseContent] = useState('');
+//     const [showProfile, setShowProfile] = useState(false);
+//     const [userNumber, setUserNumber] = useState(localStorage.getItem('UserNumber') || null);
+//     const [userId, setUserId] = useState(localStorage.getItem('UserId') || null);
+//     const [user, setUser] = useState(null);
+//     const [userName, setUserName] = useState(localStorage.getItem('userName') || null);
+//     const [currentSessionIndex, setCurrentSessionIndex] = useState(0);  // Track active session
+//     const [prevPrompt, setPrevPrompt] = useState([]); // Add this state
+
+//     // Sessions: Each session contains 10 messages
+//     const [sessions, setSessions] = useState(() => {
+//         return JSON.parse(localStorage.getItem('chatSessions')) || [];
+//     });
+
+//     useEffect(() => {
+//         const token = localStorage.getItem('authToken');
+//         if (token) {
+//             setSignedIn(true);
+//             try {
+//                 const payload = JSON.parse(atob(token.split('.')[1]));
+//                 setUser(payload.user || null);
+//                 setUserName(payload.userName || localStorage.getItem('userName'));
+//                 localStorage.setItem('userName', payload.userName || '');
+//             } catch (error) {
+//                 console.error("Error decoding token:", error);
+//                 setSignedIn(false);
+//             }
+//         } else {
+//             setSignedIn(false);
+//         }
+//     }, []);
+
+//     useEffect(() => {
+//         localStorage.setItem('chatSessions', JSON.stringify(sessions));
+//     }, [sessions]);
+
+//     return (
+//         <AppContext.Provider value={{
+//             signedIn,
+//             setSignedIn,
+//             user,
+//             setUser,
+//             userName,
+//             setUserName,
+//             sessions,
+//             setSessions,
+//             input,
+//             setInput,
+//             responseContent,
+//             setResponseContent,
+//             showProfile,
+//             setShowProfile,
+//             userNumber,
+//             setUserNumber,
+//             userId,
+//             setUserId,
+//             currentSessionIndex,
+//             setCurrentSessionIndex,
+//             setPrevPrompt // ✅ Add 
+//         }}>
+//             {children}
+//         </AppContext.Provider>
+//     );
+// };
+
+
 import React, { createContext, useState, useEffect } from "react";
 
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-    const [signedIn, setSignedIn] = useState(false);
-    const [input, setInput] = useState('');
-    const [responseContent, setResponseContent] = useState('');
-    const [showProfile, setShowProfile] = useState(false);
-    const [userNumber, setUserNumber] = useState(localStorage.getItem('UserNumber') || null);
-    const [userId, setUserId] = useState(localStorage.getItem('UserId') || null);
-    const [user, setUser] = useState(null);
-    const [userName, setUserName] = useState(localStorage.getItem('userName') || null);
-    const [currentSessionIndex, setCurrentSessionIndex] = useState(0);  // Track active session
-    const [prevPrompt, setPrevPrompt] = useState([]); // Add this state
+  const [input, setInput] = useState("");
+  const [responseContent, setResponseContent] = useState("");
+  const [sessions, setSessions] = useState([]);
+  const [currentSessionIndex, setCurrentSessionIndex] = useState(null);
 
-    // Sessions: Each session contains 10 messages
-    const [sessions, setSessions] = useState(() => {
-        return JSON.parse(localStorage.getItem('chatSessions')) || [];
-    });
+  useEffect(() => {
+    const savedSessions = JSON.parse(localStorage.getItem("chatSessions")) || [];
+    setSessions(savedSessions);
+  }, []);
 
-    useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            setSignedIn(true);
-            try {
-                const payload = JSON.parse(atob(token.split('.')[1]));
-                setUser(payload.user || null);
-                setUserName(payload.userName || localStorage.getItem('userName'));
-                localStorage.setItem('userName', payload.userName || '');
-            } catch (error) {
-                console.error("Error decoding token:", error);
-                setSignedIn(false);
-            }
-        } else {
-            setSignedIn(false);
-        }
-    }, []);
+  useEffect(() => {
+    localStorage.setItem("chatSessions", JSON.stringify(sessions));
+  }, [sessions]);
 
-    useEffect(() => {
-        localStorage.setItem('chatSessions', JSON.stringify(sessions));
-    }, [sessions]);
-
-    return (
-        <AppContext.Provider value={{
-            signedIn,
-            setSignedIn,
-            user,
-            setUser,
-            userName,
-            setUserName,
-            sessions,
-            setSessions,
-            input,
-            setInput,
-            responseContent,
-            setResponseContent,
-            showProfile,
-            setShowProfile,
-            userNumber,
-            setUserNumber,
-            userId,
-            setUserId,
-            currentSessionIndex,
-            setCurrentSessionIndex,
-            setPrevPrompt // ✅ Add 
-        }}>
-            {children}
-        </AppContext.Provider>
-    );
+  return (
+    <AppContext.Provider
+      value={{
+        input,
+        setInput,
+        responseContent,
+        setResponseContent,
+        sessions,
+        setSessions,
+        currentSessionIndex,
+        setCurrentSessionIndex,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
 };
+

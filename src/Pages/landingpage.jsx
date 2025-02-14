@@ -12,6 +12,7 @@ import {
 import Heroali from "./heroali";
 
 const Landingpage = () => {
+  const year = new Date().getFullYear()
   return (
     <>
       <Heroali />
@@ -366,7 +367,7 @@ const Landingpage = () => {
 
         {/* Copyright Section */}
         <div className="text-center  text-xs sm:text-sm mt-6">
-          <p>© 2025 WebInvolve Inc. All rights reserved.</p>
+          <p>© {year} WebInvolve Inc. All rights reserved.</p>
         </div>
       </footer>
     </>

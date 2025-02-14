@@ -75,6 +75,13 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
+    const savedChatHistory = localStorage.getItem("chatHistory");
+    if (savedChatHistory) {
+      setChatHistory(JSON.parse(savedChatHistory));
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchChatHistory = async () => {
       if (!userId || !agencyId) return;
       const currentToken = localStorage.getItem("authToken");
@@ -134,10 +141,16 @@ const Main = () => {
         }
       );
       const responseText = formatResponse(response.data.content);
-      setChatHistory((prevChatHistory) => [
-        ...prevChatHistory,
-        { user_prompt: input, ai_response: responseText },
-      ]);
+      setChatHistory((prevChatHistory) => {
+        const updatedChatHistory = [
+          ...prevChatHistory,
+          { user_prompt: input, ai_response: responseText },
+        ];
+        
+        localStorage.setItem("chatHistory", JSON.stringify(updatedChatHistory)); // Save to localStorage
+        
+        return updatedChatHistory;
+      });
       setResponseContent(responseText);
     } catch (error) {
       console.error(
@@ -198,4 +211,3 @@ const Main = () => {
 };
 
 export default Main;
-

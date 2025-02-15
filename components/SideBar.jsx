@@ -23,6 +23,7 @@ const SideBar = () => {
     setResponseContent("");
     setActiveConversation(null);
   };
+  
 
   return (
     <>
@@ -51,7 +52,7 @@ const SideBar = () => {
       </div>
 
       <div
-        className={`border border-gray-400 fixed inset-y-0 left-0 w-64 backdrop-blur-lg transform transition-transform duration-300 ease-in-out z-40 lg:static lg:translate-x-0 ${
+        className={`border border-[#505050] fixed inset-y-0 left-0 w-64 backdrop-blur-lg transform transition-transform duration-300 ease-in-out z-40 lg:static lg:translate-x-0 ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -64,14 +65,14 @@ const SideBar = () => {
                   <div
                     key={index}
                     onClick={() => loadChat(index)}
-                    className="cursor-pointer bg-[#3f3f3f5d] text-white p-3 rounded-lg mb-2 hover:bg-gray-500"
+                    className="cursor-pointer bg-[#3f3f3f5d]  p-3 rounded-lg mb-2 hover:bg-gray-500"
                   >
                     <p className="font-bold">{chat.user_prompt?.slice(0, 18)}</p>
                     <p className="text-sm">{chat.user_prompt?.slice(0, 18)}...</p>
                   </div>
                 ))
               ) : (
-                <p className="text-center text-gray-500">No chat history</p>
+                <p className="text-center ">No chat history</p>
               )}
             </div>
           </div>
@@ -79,7 +80,7 @@ const SideBar = () => {
           <div className="p-4">
             <button
               onClick={clearChatHistory}
-              className="w-full px-4 py-2 text-sm text-white bg-red-600 rounded hover:bg-red-500"
+              className="w-full px-4 py-2 text-sm bg-red-600 rounded hover:bg-red-500"
             >
               Clear Chat History
             </button>
@@ -94,3 +95,7 @@ const SideBar = () => {
 };
 
 export default SideBar;
+
+
+
+

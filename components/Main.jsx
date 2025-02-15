@@ -147,7 +147,10 @@ const Main = () => {
         <div className="text-xl font-bold text-center mb-5">MaizBaan Ai</div>
 
         {/* Chat History Display */}
-        <div className="flex-1 overflow-y-auto space-y-4 p-3" ref={chatContainerRef}>
+        <div
+          className="flex-1 overflow-y-auto space-y-4 p-3"
+          ref={chatContainerRef}
+        >
           {activeConversation ? (
             <div>
               {/* User Message */}
@@ -161,7 +164,9 @@ const Main = () => {
               <div className="text-left mt-2">
                 <div
                   className="inline-block border border-[#8080806b] p-3 rounded-lg"
-                  dangerouslySetInnerHTML={{ __html: activeConversation.ai_response }}
+                  dangerouslySetInnerHTML={{
+                    __html: activeConversation.ai_response,
+                  }}
                 />
               </div>
             </div>
@@ -177,6 +182,11 @@ const Main = () => {
 
                 {/* AI Response */}
                 <div className="text-left mt-2">
+                  <img
+                    src="src\assets\maizbaanLogo.png"
+                    alt=""
+                    className="w-[2rem] relative right-[1rem] "
+                  />
                   <div
                     className="inline-block border border-[#8080806b] p-3 rounded-lg"
                     dangerouslySetInnerHTML={{ __html: chat.ai_response }}
@@ -195,10 +205,10 @@ const Main = () => {
             </div>
           )} */}
           {loading && (
-  <div className="text-left text-gray-500 italic animate-blink">
-    Thinking...
-  </div>
-)}
+            <div className="text-left text-gray-500 italic animate-blink">
+              Thinking...
+            </div>
+          )}
         </div>
 
         {/* Input Section */}
@@ -208,9 +218,16 @@ const Main = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask MaizBaan"
-            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendPrompt())}
+            onKeyDown={(e) =>
+              e.key === "Enter" &&
+              !e.shiftKey &&
+              (e.preventDefault(), sendPrompt())
+            }
           />
-          <VscSend className="text-2xl cursor-pointer text-blue-500" onClick={sendPrompt} />
+          <VscSend
+            className="text-2xl cursor-pointer text-blue-500"
+            onClick={sendPrompt}
+          />
         </div>
       </div>
     </>

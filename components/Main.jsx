@@ -195,7 +195,7 @@ const Main = () => {
             </div>
           )} */}
           {loading && (
-  <div className="text-left text-gray-500 italic">
+  <div className="text-left text-gray-500 italic animate-blink">
     Thinking...
   </div>
 )}

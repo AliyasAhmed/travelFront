@@ -1,124 +1,78 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 import AuthSection from "./AuthSection";
 
 const SideBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const {
-    setInput,
-    setResponseContent,
-    sessions,
-    setCurrentSessionIndex,
-    currentSessionIndex,
-    setSessions,
-  } = React.useContext(AppContext);
+  const [chatHistory, setChatHistory] = useState([]);
+  const { setInput, setResponseContent } = React.useContext(AppContext);
 
-  const today = new Date().toDateString();
-  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  useEffect(() => {
+    const savedChats = JSON.parse(localStorage.getItem("chatHistory")) || [];
+    setChatHistory(savedChats);
+  }, []);
 
-  const categorizedSessions = {
-    today: [],
-    yesterday: [],
-    older: [],
+  const loadChat = () => {
+    setInput("");
+    setResponseContent(chatHistory.map(chat => chat.ai_response).join("\n\n"));
   };
 
-  sessions.forEach((session) => {
-    const sessionDate = new Date(session.timestamp).toDateString();
-    if (sessionDate === today) {
-      categorizedSessions.today.push(session);
-    } else if (sessionDate === yesterday) {
-      categorizedSessions.yesterday.push(session);
-    } else {
-      categorizedSessions.older.push(session);
-    }
-  });
-
   const clearChatHistory = () => {
-    setSessions([]);
+    localStorage.removeItem("chatHistory");
+    setChatHistory([]);
     setInput("");
     setResponseContent("");
-    setCurrentSessionIndex(null);
   };
 
   return (
     <>
-      <div className="lg:hidden fixed top-6 left-4 z-50 ">
+      <div className="lg:hidden fixed top-6 left-4 z-50">
         {isMobileMenuOpen ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 cursor-pointer"
-            fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
+            <path strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         ) : (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 cursor-pointer"
-            fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
             onClick={() => setIsMobileMenuOpen(true)}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
+            <path strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         )}
       </div>
 
       <div
-        className={`border border-[#80808075] fixed inset-y-0 left-0 w-64 backdrop-blur-lg transform transition-transform duration-300 ease-in-out z-40 lg:static lg:translate-x-0 ${
+        className={`border border-gray-400 fixed inset-y-0 left-0 w-64 backdrop-blur-lg transform transition-transform duration-300 ease-in-out z-40 lg:static lg:translate-x-0 ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="max-h-screen flex flex-col justify-between py-5 px-4 ">
+        <div className="max-h-screen flex flex-col justify-between py-5 px-4">
           <div>
-            <p className="mt-7 mb-5 text-center text-xl">Recent Sessions</p>
-            <div className="max-h-[70vh] overflow-hidden relative">
-              {Object.entries(categorizedSessions).map(
-                ([category, sessions]) =>
-                  sessions.length > 0 && (
-                    <div key={category}>
-                      <p className="text-lg font-bold mt-3">
-                        {category.charAt(0).toUpperCase() + category.slice(1)}
-                      </p>
-                      <ul className="flex flex-col gap-2 overflow-y-auto max-h-[70vh]">
-                        {sessions.map((session, index) => (
-                          <li
-                            key={session.id}
-                            onClick={() => setCurrentSessionIndex(session.id)}
-                            className={`flex flex-col gap-1 p-2 rounded-lg cursor-pointer text-white hover:bg-gray-400 ${
-                              currentSessionIndex === session.id
-                                ? "bg-gray-500"
-                                : ""
-                            }`}
-                          >
-                            <p className="font-bold text-lg">
-                              Session {session.id}
-                            </p>
-                            <p className="font-semibold">
-                              {session.messages[0]?.content.slice(0, 18)}...
-                            </p>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )
+            <p className="mt-7 mb-5 text-center text-xl">Chat History</p>
+            <div className="max-h-[70vh] overflow-y-auto">
+              {chatHistory.length > 0 ? (
+                <div
+                  onClick={loadChat}
+                  className="cursor-pointer bg-gray-600 text-white p-3 rounded-lg mb-2 hover:bg-gray-500"
+                >
+                  <p className="font-bold">{chatHistory[0]?.user_prompt?.slice(0, 18)}</p>
+                  <p className="text-sm">{chatHistory[0]?.user_prompt?.slice(0, 18)}...</p>
+                </div>
+              ) : (
+                <p className="text-center text-gray-500">No chat history</p>
               )}
             </div>
           </div>
+
           <div className="p-4">
             <button
               onClick={clearChatHistory}
@@ -126,7 +80,7 @@ const SideBar = () => {
             >
               Clear Chat History
             </button>
-            <div className="fixed bottom-[8rem] lg:bottom-[10rem] ">
+            <div className="fixed bottom-[8rem] lg:bottom-[10rem]">
               <AuthSection />
             </div>
           </div>
@@ -137,4 +91,3 @@ const SideBar = () => {
 };
 
 export default SideBar;
-

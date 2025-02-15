@@ -5,16 +5,15 @@ import AuthSection from "./AuthSection";
 const SideBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
-  const { setInput, setResponseContent } = React.useContext(AppContext);
+  const { setInput, setResponseContent, setActiveConversation } = React.useContext(AppContext);
 
   useEffect(() => {
     const savedChats = JSON.parse(localStorage.getItem("chatHistory")) || [];
     setChatHistory(savedChats);
   }, []);
 
-  const loadChat = () => {
-    setInput("");
-    setResponseContent(chatHistory.map(chat => chat.ai_response).join("\n\n"));
+  const loadChat = (index) => {
+    setActiveConversation(chatHistory[index]);
   };
 
   const clearChatHistory = () => {
@@ -22,6 +21,7 @@ const SideBar = () => {
     setChatHistory([]);
     setInput("");
     setResponseContent("");
+    setActiveConversation(null);
   };
 
   return (
@@ -58,15 +58,18 @@ const SideBar = () => {
         <div className="max-h-screen flex flex-col justify-between py-5 px-4">
           <div>
             <p className="mt-7 mb-5 text-center text-xl">Chat History</p>
-            <div className="max-h-[70vh] overflow-y-auto">
+            <div className="max-h-[60vh] overflow-y-auto">
               {chatHistory.length > 0 ? (
-                <div
-                  onClick={loadChat}
-                  className="cursor-pointer bg-gray-600 text-white p-3 rounded-lg mb-2 hover:bg-gray-500"
-                >
-                  <p className="font-bold">{chatHistory[0]?.user_prompt?.slice(0, 18)}</p>
-                  <p className="text-sm">{chatHistory[0]?.user_prompt?.slice(0, 18)}...</p>
-                </div>
+                chatHistory.map((chat, index) => (
+                  <div
+                    key={index}
+                    onClick={() => loadChat(index)}
+                    className="cursor-pointer bg-[#3f3f3f5d] text-white p-3 rounded-lg mb-2 hover:bg-gray-500"
+                  >
+                    <p className="font-bold">{chat.user_prompt?.slice(0, 18)}</p>
+                    <p className="text-sm">{chat.user_prompt?.slice(0, 18)}...</p>
+                  </div>
+                ))
               ) : (
                 <p className="text-center text-gray-500">No chat history</p>
               )}

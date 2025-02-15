@@ -22,6 +22,7 @@ const Main = () => {
     setResponseContent,
     setUser,
     setSignedIn,
+    activeConversation,
   } = useContext(AppContext);
 
   const formatResponse = (text) => {
@@ -75,50 +76,16 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    const savedChatHistory = localStorage.getItem("chatHistory");
-    if (savedChatHistory) {
-      setChatHistory(JSON.parse(savedChatHistory));
-    }
+    const savedChats = JSON.parse(localStorage.getItem("chatHistory")) || [];
+    setChatHistory(savedChats);
   }, []);
-
-  useEffect(() => {
-    const fetchChatHistory = async () => {
-      if (!userId || !agencyId) return;
-      const currentToken = localStorage.getItem("authToken");
-      if (!currentToken || isTokenExpired(currentToken)) {
-        handleTokenExpiration();
-        return;
-      }
-      try {
-        const response = await axios.get(
-          `https://api.maizbaan.ai/api/v1/conversations/conversations/user/${userId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${currentToken.trim()}`,
-            },
-          }
-        );
-        setChatHistory(response.data);
-      } catch (error) {
-        console.error("Error fetching chat history:", error.message);
-        if (
-          error.response &&
-          (error.response.status === 401 || error.response.status === 403)
-        ) {
-          handleTokenExpiration();
-        }
-      }
-    };
-    fetchChatHistory();
-  }, [userId, agencyId]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
     }
-  }, [chatHistory, responseContent]);
+  }, [chatHistory, responseContent, activeConversation]);
 
   const sendPrompt = async () => {
     const token = localStorage.getItem("authToken");
@@ -129,6 +96,7 @@ const Main = () => {
     if (!input.trim()) return;
     setResponseContent("");
     setLoading(true);
+
     try {
       const response = await axios.post(
         `https://api.maizbaan.ai/api/v1/conversations/chats?agency_id=1&user_id=${userId}`,
@@ -140,17 +108,18 @@ const Main = () => {
           },
         }
       );
+
       const responseText = formatResponse(response.data.content);
-      setChatHistory((prevChatHistory) => {
+
+      setChatHistory((prevHistory) => {
         const updatedChatHistory = [
-          ...prevChatHistory,
+          ...prevHistory,
           { user_prompt: input, ai_response: responseText },
         ];
-        
-        localStorage.setItem("chatHistory", JSON.stringify(updatedChatHistory)); // Save to localStorage
-        
+        localStorage.setItem("chatHistory", JSON.stringify(updatedChatHistory));
         return updatedChatHistory;
       });
+
       setResponseContent(responseText);
     } catch (error) {
       console.error(
@@ -163,7 +132,7 @@ const Main = () => {
       ) {
         handleTokenExpiration();
       } else {
-        toast.error("Failed to Generate response. Please try again.");
+        toast.error("Failed to generate response. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -176,33 +145,71 @@ const Main = () => {
       <div className="flex flex-col h-screen w-full p-5">
         <ToastContainer />
         <div className="text-xl font-bold text-center mb-5">MaizBaan Ai</div>
-        <div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-4 p-3">
-          {chatHistory.map((chat, index) => (
-            <div key={index} className="space-y-2">
-              {chat.user_prompt && (
-                <div className="text-right">
-                  <div className="inline-block border border-[#8080806b] bg-blue-500  p-3 rounded-lg">{chat.user_prompt}</div>
-                </div>
-              )}
-              {chat.ai_response && (
-                <div className="text-left">
-                  <div className="inline-block border border-[#8080806b]  p-3 rounded-lg" dangerouslySetInnerHTML={{ __html: chat.ai_response }} />
-                </div>
-              )}
-            </div>
-          ))}
 
-          {/* Show loading indicator only when waiting for a response */}
-          {loading && (
+        {/* Chat History Display */}
+        <div className="flex-1 overflow-y-auto space-y-4 p-3" ref={chatContainerRef}>
+          {activeConversation ? (
+            <div>
+              {/* User Message */}
+              <div className="text-right">
+                <div className="inline-block border border-[#8080806b] bg-blue-500 p-3 rounded-lg">
+                  {activeConversation.user_prompt}
+                </div>
+              </div>
+
+              {/* AI Response */}
+              <div className="text-left mt-2">
+                <div
+                  className="inline-block border border-[#8080806b] p-3 rounded-lg"
+                  dangerouslySetInnerHTML={{ __html: activeConversation.ai_response }}
+                />
+              </div>
+            </div>
+          ) : (
+            chatHistory.map((chat, index) => (
+              <div key={index}>
+                {/* User Message */}
+                <div className="text-right">
+                  <div className="inline-block border border-[#8080806b] bg-blue-500 p-3 rounded-lg">
+                    {chat.user_prompt}
+                  </div>
+                </div>
+
+                {/* AI Response */}
+                <div className="text-left mt-2">
+                  <div
+                    className="inline-block border border-[#8080806b] p-3 rounded-lg"
+                    dangerouslySetInnerHTML={{ __html: chat.ai_response }}
+                  />
+                </div>
+              </div>
+            ))
+          )}
+
+          {/* Loading Indicator */}
+          {/* {loading && (
             <div className="text-left animate-pulse">
               <div className="inline-block border border-[#8080806b] p-3 rounded-lg bg-gray-200">
                 Generating response...
               </div>
             </div>
-          )}
+          )} */}
+          {loading && (
+  <div className="text-left text-gray-500 italic">
+    Thinking...
+  </div>
+)}
         </div>
-        <div className="flex items-center gap-3  p-3 rounded-lg shadow-md">
-          <textarea className="flex-1 p-2 border bg-transparent rounded-md" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask MaizBaan" onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendPrompt())} />
+
+        {/* Input Section */}
+        <div className="flex items-center gap-3 p-3 rounded-lg shadow-md">
+          <textarea
+            className="flex-1 p-2 border bg-transparent rounded-md"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask MaizBaan"
+            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && (e.preventDefault(), sendPrompt())}
+          />
           <VscSend className="text-2xl cursor-pointer text-blue-500" onClick={sendPrompt} />
         </div>
       </div>

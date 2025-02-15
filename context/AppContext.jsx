@@ -14,6 +14,7 @@ export const AppProvider = ({ children }) => {
     const [userName, setUserName] = useState(localStorage.getItem('userName') || null);
     const [currentSessionIndex, setCurrentSessionIndex] = useState(0);  // Track active session
     const [prevPrompt, setPrevPrompt] = useState([]); // Add this state
+    const [activeConversation, setActiveConversation] = useState(null); // Track active conversation
 
     // Sessions: Each session contains 10 messages
     const [sessions, setSessions] = useState(() => {
@@ -64,12 +65,12 @@ export const AppProvider = ({ children }) => {
             setUserId,
             currentSessionIndex,
             setCurrentSessionIndex,
-            setPrevPrompt // ✅ Add 
+            setPrevPrompt, // ✅ Add 
+            activeConversation,
+            setActiveConversation // Add this
         }}>
             {children}
         </AppContext.Provider>
     );
 };
-
-
 

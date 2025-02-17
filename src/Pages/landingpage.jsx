@@ -12,11 +12,11 @@ import {
 import Heroali from "./heroali";
 
 const Landingpage = () => {
-  const year = new Date().getFullYear()
+  const year = new Date().getFullYear();
   return (
     <>
       <Heroali />
-      <section className="py-12 ">
+      <section className="py-2 ">
         <div className="container mx-auto px-4">
           <h2
             className={`text-4xl font-bold text-center mb-8 {DarkMode ? "text-black" : "text-white"}`}
@@ -288,8 +288,9 @@ const Landingpage = () => {
           </div>
         </div>
       </section>
-
-      <ThreeScene />
+      <div className="h-[20rem]">
+        <ThreeScene />
+      </div>
 
       <footer className=" py-8 px-20 ">
         <div className="container mx-auto px-4 text-center md:text-left flex flex-col-reverse gap-8 md:flex-row justify-around">

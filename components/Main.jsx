@@ -442,7 +442,7 @@ const Main = () => {
     <>
       <div className="flex flex-col h-screen w-full p-5">
         <ToastContainer />
-        <div className="text-xl font-bold text-center mb-5">MaizBaan Ai</div>
+        <div className="text-xl font-bold text-center mb-5"><a href="/">MaizBaan Ai</a></div>
 
         <div
           className="flex-1 overflow-y-auto space-y-4 p-3"

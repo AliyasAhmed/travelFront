@@ -18,7 +18,7 @@ const Heroali = () => {
 
   return (
     <>
-      <div className="h-[120vh] flex justify-center text-center lg:rounded-b-[10rem] z-[10] w-auto">
+      <div className="h-[90vh] lg:h-[120vh] flex justify-center text-center lg:rounded-b-[10rem] z-[10] w-auto">
         {/* Clock Tower Image */}
         <div className="absolute top-[30rem] lg:top-[40rem] clocktower right-10 w-auto h-[30vh] flex justify-center items-center overflow-hidden">
           <img

@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { FaRegUserCircle } from "react-icons/fa";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const AuthSection = () => {
   const { signedIn, user, setSignedIn, setUser, showProfile, setShowProfile } =
@@ -40,7 +41,7 @@ const AuthSection = () => {
       ) : (
         <div className="relative flex items-center">
           <button aria-label="Toggle User Menu" className="focus:outline-none" onClick={toggleProfile}>
-            <FaRegUserCircle className="text-2xl text-gray-200 hover:text-white" />
+            <BsThreeDotsVertical  className="text-2xl text-gray-200 hover:text-white" />
           </button>
           {showProfile && (
             <div className="absolute left-[10] top-10 w-40 bg-white shadow-md rounded-md z-50">

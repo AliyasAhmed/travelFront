@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import AuthSection from "./AuthSection";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FaRegUserCircle } from "react-icons/fa";
+import { MdAutoDelete } from "react-icons/md";
 
 const SideBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -99,14 +102,15 @@ const SideBar = () => {
             </div>
           </div>
 
-          <div className="p-4">
+          <div className="p-4 text-center">
             <button
               onClick={clearChatHistory}
-              className="w-full px-4 py-2 text-sm bg-red-600 rounded hover:bg-red-500"
+              className="w-auto px-4 py-2  bg-red-600 rounded hover:bg-red-500 text-2xl"
             >
-              Clear Chat History
+             <MdAutoDelete /> 
             </button>
-            <div className="fixed bottom-[8rem] lg:bottom-[10rem]">
+            <div className="fixed bottom-[8rem] lg:bottom-[10rem] left-[2px] w-full flex justify-between items-center text-2xl p-2 border border-[#e1c1e1] rounded-2xl shadow-lg drop-shadow-lg shadow-gray-400">
+              <FaRegUserCircle />
               <AuthSection />
             </div>
           </div>

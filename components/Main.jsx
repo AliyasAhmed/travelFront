@@ -174,15 +174,16 @@ const Main = () => {
               <div key={index}>
                 {/* User Message */}
                 <div className="text-right">
-                  <div className="inline-block border border-[#8080806b] bg-blue-500 p-3 rounded-lg">
+                  <div className="inline-block border border-[#4444446b] bg-blue-500 p-3 rounded-lg">
                     {message.user_prompt}
                   </div>
                 </div>
 
                 {/* AI Response */}
                 <div className="text-left mt-2">
+                  <img className="relative right-[1rem] w-[2rem]" src="src\assets\maizbaanLogo.png" alt="" />
                   <div
-                    className="inline-block border border-[#8080806b] p-3 rounded-lg"
+                    className="inline-block border border-[#4444446b] p-3 rounded-lg"
                     dangerouslySetInnerHTML={{
                       __html: message.ai_response,
                     }}

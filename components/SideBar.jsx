@@ -65,7 +65,7 @@ const SideBar = () => {
       </div>
 
       <div
-        className={`border border-[#505050] fixed inset-y-0 left-0 w-64 backdrop-blur-lg transform transition-transform duration-300 ease-in-out z-40 lg:static lg:translate-x-0 ${
+        className={`border border-[#31313152] fixed inset-y-0 left-0 w-64 backdrop-blur-lg transform transition-transform duration-300 ease-in-out z-40 lg:static lg:translate-x-0 ${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -80,7 +80,7 @@ const SideBar = () => {
                     onClick={() => loadChat(index)}
                     className={`cursor-pointer p-3 rounded-lg mb-2 hover:bg-gray-500 ${
                       activeConversation === chat
-                        ? "bg-gray-700"
+                        ? "bg-[#1b1b1b75]"
                         : "bg-[#3f3f3f5d]"
                     }`}
                   >

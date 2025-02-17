@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import AuthSection from "./AuthSection";
 
 const SideBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [chatHistory, setChatHistory] = useState([]);
-  const { setInput, setResponseContent, setActiveConversation } = React.useContext(AppContext);
+  const {
+    setInput,
+    setResponseContent,
+    setActiveConversation,
+    activeConversation,
+  } = useContext(AppContext);
 
   useEffect(() => {
     const savedChats = JSON.parse(localStorage.getItem("chatHistory")) || [];
@@ -13,7 +18,16 @@ const SideBar = () => {
   }, []);
 
   const loadChat = (index) => {
-    setActiveConversation(chatHistory[index]);
+    const selectedChat = chatHistory[index];
+    if (
+      selectedChat &&
+      selectedChat.messages &&
+      selectedChat.messages.length > 0
+    ) {
+      if (selectedChat !== activeConversation) {
+        setActiveConversation(selectedChat);
+      }
+    }
   };
 
   const clearChatHistory = () => {
@@ -23,7 +37,6 @@ const SideBar = () => {
     setResponseContent("");
     setActiveConversation(null);
   };
-  
 
   return (
     <>
@@ -65,14 +78,23 @@ const SideBar = () => {
                   <div
                     key={index}
                     onClick={() => loadChat(index)}
-                    className="cursor-pointer bg-[#3f3f3f5d]  p-3 rounded-lg mb-2 hover:bg-gray-500"
+                    className={`cursor-pointer p-3 rounded-lg mb-2 hover:bg-gray-500 ${
+                      activeConversation === chat
+                        ? "bg-gray-700"
+                        : "bg-[#3f3f3f5d]"
+                    }`}
                   >
-                    <p className="font-bold">{chat.user_prompt?.slice(0, 18)}</p>
-                    <p className="text-sm">{chat.user_prompt?.slice(0, 18)}...</p>
+                    <p className="font-bold">
+                      {chat.messages?.[0]?.user_prompt?.slice(0, 18) ||
+                        "New Chat"}
+                    </p>
+                    <p className="text-sm">
+                      {chat.messages?.[0]?.user_prompt?.slice(0, 18)}...
+                    </p>
                   </div>
                 ))
               ) : (
-                <p className="text-center ">No chat history</p>
+                <p className="text-center">No chat history</p>
               )}
             </div>
           </div>
@@ -95,6 +117,3 @@ const SideBar = () => {
 };
 
 export default SideBar;
-
-
-

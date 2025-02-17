@@ -23,6 +23,7 @@ const Main = () => {
     setUser,
     setSignedIn,
     activeConversation,
+    setActiveConversation,
   } = useContext(AppContext);
 
   const formatResponse = (text) => {
@@ -96,7 +97,7 @@ const Main = () => {
     if (!input.trim()) return;
     setResponseContent("");
     setLoading(true);
-
+  
     try {
       const response = await axios.post(
         `https://api.maizbaan.ai/api/v1/conversations/chats?agency_id=1&user_id=${userId}`,
@@ -108,28 +109,44 @@ const Main = () => {
           },
         }
       );
-
+  
       const responseText = formatResponse(response.data.content);
-
+  
+      // Update chat history to include the entire conversation
       setChatHistory((prevHistory) => {
-        const updatedChatHistory = [
-          ...prevHistory,
-          { user_prompt: input, ai_response: responseText },
-        ];
+        let updatedChatHistory = [...prevHistory];
+  
+        if (activeConversation) {
+          // Add new messages to the active conversation
+          const updatedSession = {
+            ...activeConversation,
+            messages: [
+              ...activeConversation.messages,
+              { user_prompt: input, ai_response: responseText },
+            ],
+          };
+          updatedChatHistory = updatedChatHistory.map((chat) =>
+            chat === activeConversation ? updatedSession : chat
+          );
+          setActiveConversation(updatedSession);
+        } else {
+          // Start a new conversation if no active one exists
+          const newChat = {
+            messages: [{ user_prompt: input, ai_response: responseText }],
+          };
+          updatedChatHistory.push(newChat);
+          setActiveConversation(newChat);
+        }
+  
+        // Save the updated chat history to local storage
         localStorage.setItem("chatHistory", JSON.stringify(updatedChatHistory));
         return updatedChatHistory;
       });
-
+  
       setResponseContent(responseText);
     } catch (error) {
-      console.error(
-        "Error response:",
-        error.response ? error.response.data : error.message
-      );
-      if (
-        error.response &&
-        (error.response.status === 401 || error.response.status === 403)
-      ) {
+      console.error("Error response:", error.response ? error.response.data : error.message);
+      if (error.response && (error.response.status === 401 || error.response.status === 403)) {
         handleTokenExpiration();
       } else {
         toast.error("Failed to generate response. Please try again.");
@@ -139,7 +156,8 @@ const Main = () => {
       setInput("");
     }
   };
-
+  
+  
   return (
     <>
       <div className="flex flex-col h-screen w-full p-5">
@@ -152,58 +170,30 @@ const Main = () => {
           ref={chatContainerRef}
         >
           {activeConversation ? (
-            <div>
-              {/* User Message */}
-              <div className="text-right">
-                <div className="inline-block border border-[#8080806b] bg-blue-500 p-3 rounded-lg">
-                  {activeConversation.user_prompt}
-                </div>
-              </div>
-
-              {/* AI Response */}
-              <div className="text-left mt-2">
-                <div
-                  className="inline-block border border-[#8080806b] p-3 rounded-lg"
-                  dangerouslySetInnerHTML={{
-                    __html: activeConversation.ai_response,
-                  }}
-                />
-              </div>
-            </div>
-          ) : (
-            chatHistory.map((chat, index) => (
+            activeConversation.messages.map((message, index) => (
               <div key={index}>
                 {/* User Message */}
                 <div className="text-right">
                   <div className="inline-block border border-[#8080806b] bg-blue-500 p-3 rounded-lg">
-                    {chat.user_prompt}
+                    {message.user_prompt}
                   </div>
                 </div>
 
                 {/* AI Response */}
                 <div className="text-left mt-2">
-                  <img
-                    src="src\assets\maizbaanLogo.png"
-                    alt=""
-                    className="w-[2rem] relative right-[1rem] "
-                  />
                   <div
                     className="inline-block border border-[#8080806b] p-3 rounded-lg"
-                    dangerouslySetInnerHTML={{ __html: chat.ai_response }}
+                    dangerouslySetInnerHTML={{
+                      __html: message.ai_response,
+                    }}
                   />
                 </div>
               </div>
             ))
+          ) : (
+            <div className="text-gray-500 italic text-center">Select a chat</div>
           )}
 
-          {/* Loading Indicator */}
-          {/* {loading && (
-            <div className="text-left animate-pulse">
-              <div className="inline-block border border-[#8080806b] p-3 rounded-lg bg-gray-200">
-                Generating response...
-              </div>
-            </div>
-          )} */}
           {loading && (
             <div className="text-left text-gray-500 italic animate-blink">
               Thinking...

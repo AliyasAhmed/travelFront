@@ -44,7 +44,7 @@ const AuthSection = () => {
             <BsThreeDotsVertical  className="text-2xl text-gray-200 hover:text-white" />
           </button>
           {showProfile && (
-            <div className="absolute left-[10] top-10 w-40 bg-white shadow-md rounded-md z-50">
+            <div className="absolute left-[-9rem] top-10 w-40 bg-[#cecece] shadow-md rounded-md z-50">
               <p className="px-4 py-2 text-gray-700 text-sm">{`Hello, ${user?.name || "User"}`}</p>
               <button
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"

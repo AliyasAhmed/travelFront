@@ -109,7 +109,7 @@ const SideBar = () => {
             >
              <MdAutoDelete /> 
             </button>
-            <div className="fixed bottom-[8rem] lg:bottom-[10rem] left-[2px] w-full flex justify-between items-center text-2xl p-2 border border-[#e1c1e1] rounded-2xl shadow-lg drop-shadow-lg shadow-gray-400">
+            <div className="fixed bottom-[8rem] lg:bottom-[10rem] left-[2px] lg:w-[11vw] w-[25vw] flex justify-between items-center text-2xl p-2 border border-[#5e5e5e98] rounded-2xl shadow-[0px_10px_20px_0px] shadow-gray-400">
               <FaRegUserCircle />
               <AuthSection />
             </div>

@@ -162,12 +162,39 @@ const Main = () => {
       setInput("");
     }
   };
+  const downloadPDF = async () => {
+    const token = localStorage.getItem("authToken");
+    if (!token || isTokenExpired(token)) {
+      handleTokenExpiration();
+      return;
+    }
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/v1/genpdf/travel-packages/250/download-pdf`,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+          responseType: "blob", // Important for handling binary data (PDF)
+        }
+      );
+      // Create a temporary link element to trigger the download
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "travel-package.pdf"; // Set the desired file name
+      link.click(); // Trigger download
+    } catch (error) {
+      console.error("Error downloading PDF:", error.message);
+      toast.error("Failed to download PDF.");
+    }
+  };
  
   return (
     <>
       <div className="flex flex-col h-screen w-full p-5">
         <ToastContainer />
-        <div className="text-xl font-bold text-center mb-5">MaizBaan Ai</div>
+        <div className="text-xl font-bold text-center mb-5"> <a href="/">MaizBaan Ai</a></div>
 
         {/* Chat History Display */}
         <div
@@ -216,7 +243,7 @@ const Main = () => {
         {/* Input Section */}
         
         <div className="flex items-center gap-3 p-3 rounded-lg shadow-md">
-          <button ><img className="w-[2rem]" src="public/assets/download.svg" alt="" /></button>
+          <button onClick={downloadPDF}><img className="w-[2rem]" src="public/assets/download.svg" alt="" /></button>
           <textarea
             className="flex-1 p-2 border bg-transparent rounded-md"
             value={input}
@@ -241,3 +268,6 @@ const Main = () => {
 };
 
 export default Main;
+
+
+
